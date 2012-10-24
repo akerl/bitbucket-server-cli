@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'commander/import'
+#require 'stash'
+
+#program :version, Stash::VERSION
+program :version, '0.1.0'
+program :description, 'Command line tools for using Atlassian Stash'
+ 
+command :'pull-request' do |c|
+  c.syntax = 'stash pull-request [options]'
+  c.summary = 'Create a pull request'
+  c.description = 'Create a pull request from a repository to a branch in a hosted Stash repository.'
+  c.example 'stash pull-request topicBranch master @sebr', 'Creates a pull request from branch \'topicBranch\' into \'master\' and adds \'sebr\' as a reviewer'
+  c.option '--reviewers', Array, 'Adds the user specified by the username \'user\' as a reviewer of the pull request'
+  c.action do |args, options|
+    # Do something or c.when_called Stash::Commands::Pull-request
+  end
+end
+
