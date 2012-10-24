@@ -29,6 +29,6 @@ command 'pull-request' do |c|
   end
 end
 
-
+default_command :help
 
 # vim set ft=ruby
