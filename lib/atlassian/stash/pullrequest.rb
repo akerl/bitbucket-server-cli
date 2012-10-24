@@ -35,6 +35,10 @@ module Atlassian
 
       RepoInfo = Struct.new(:projectKey, :slug)
 
+      def initialize(config)
+        @config = config
+      end
+
       def extract_repository_info
         output = `git remote -v`.split(/\n/)[0].split(/\t/)[1]
         matchData = output.match(/scm\/(\w+)\/(\w+).git/)
@@ -59,11 +63,11 @@ module Atlassian
 
         resource = CreatePullRequestResource.new(repoInfo.projectKey, repoInfo.slug, title, description, source, target).resource
 
-        uri = URI.parse(StashGitConfig::StashUrl)
+        uri = URI.parse(@config["stash_url"])
         prPath = uri.path + '/projects/' + repoInfo.projectKey + '/repos/' + repoInfo.slug + '/pull-requests'
 
         req = Net::HTTP::Post.new(prPath, initheader = {'Content-Type' => 'application/json', 'Accept' => 'application/json'})
-        req.basic_auth StashGitConfig::User, StashGitConfig::Password
+        req.basic_auth @config["user"], @config["password"]
         req.body = resource.to_json
         http = Net::HTTP.new(uri.host, uri.port)
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE

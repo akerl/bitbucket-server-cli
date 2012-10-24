@@ -4,6 +4,7 @@ require 'rubygems'
 #require File.dirname(__FILE__) + "/../lib/stash_cli"
 require 'stash_cli'
 require 'commander/import'
+require 'yaml'
 
 program :name, "Atlassian Stash CLI"
 program :version, Atlassian::Stash::Version::STRING
@@ -12,6 +13,7 @@ program :description, "Provides convenient functions for interacting with Atlass
 include Atlassian::Stash
 include Atlassian::Stash::Git
 
+$config = YAML.load_file(File.join(Etc.getpwuid.dir, ".stashconfig.yml"))
 
 command 'pull-request' do |c|
   c.syntax = 'pull-request source target'
@@ -21,7 +23,7 @@ command 'pull-request' do |c|
     source, target, *rest = args
     raise "Please provide the name of the source and target ref" unless source && target
     ensure_within_git! do
-      cpr = CreatePullRequest.new
+      cpr = CreatePullRequest.new($config)
       cpr.create_pull_request source, target
     end
   end
