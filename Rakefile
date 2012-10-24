@@ -15,13 +15,14 @@ require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "atlassian-stash"
-  gem.homepage = "http://github.com/sebr/atlassian-stash"
+  gem.homepage = "https://bitbucket.org/sebr/git-stash-scripts"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = "CLI for Atlassian Stash"
+  gem.description = "Provides convenient functions for interacting with Atlassian Stash through the command line" 
   gem.email = "sruiz@atlassian.com"
   gem.authors = ["Seb Ruiz"]
   # dependencies defined in Gemfile
+  gem.executables = ["stash"]
 end
 Jeweler::RubygemsDotOrgTasks.new
 
