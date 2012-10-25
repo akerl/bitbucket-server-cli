@@ -11,6 +11,10 @@ module Atlassian
         system('git rev-parse')
       end
 
+      def get_remote_url
+        %x(git remote -v).split(/\s/)[1]
+      end
+
       def ensure_within_git!
         if is_in_git_repository?
           yield

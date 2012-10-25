@@ -12,7 +12,9 @@ require 'shoulda'
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
-require 'atlassian-stash'
+# require 'atlassian-stash'
+require File.dirname(__FILE__) + "/../lib/stash_cli"
+
 
 class Test::Unit::TestCase
 end

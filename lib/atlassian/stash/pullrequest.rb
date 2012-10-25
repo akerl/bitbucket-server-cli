@@ -2,6 +2,7 @@ require 'json'
 require 'net/http'
 require 'net/https'
 require 'uri'
+require 'git'
 
 module Atlassian
   module Stash
@@ -40,14 +41,12 @@ module Atlassian
       end
 
       def extract_repository_info
-        output = `git remote -v`.split(/\n/)[0].split(/\t/)[1]
-        matchData = output.match(/\/(\w+)\/(\w+).git$/)
+        if m = get_remote_url.match(/\/(\w+)\/(\w+).git$/)
+          return RepoInfo.new(m[1], m[2])
+        end
+        puts "Remote url: #{get_remote_url}"
 
-        puts matchData
-
-        raise "Repository does not seem to be hosted in Stash" unless not matchData.nil? and matchData.length == 2
-
-        RepoInfo.new(matchData[1], matchData[2])
+        raise "Repository does not seem to be hosted in Stash"
       end
 
       def generate_pull_request_title(source, target)
