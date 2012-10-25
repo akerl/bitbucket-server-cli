@@ -29,6 +29,14 @@ module Atlassian
           'fromRef' => fromRef,
           'toRef' => toRef
         }
+
+        @resource["reviewers"] = reviewers.collect { |r| 
+            {
+              'user' => {
+                'name' => r
+              }
+            }
+        } unless reviewers.empty?
       end
     end
 
@@ -82,7 +90,8 @@ module Atlassian
           elsif responseBody['message']
             puts responseBody['message']
           else
-            puts 'An unknown error occurred. Status: #{response.code}.'
+            puts 'An unknown error occurred.'
+            puts response.code
             puts response.body
           end
         else

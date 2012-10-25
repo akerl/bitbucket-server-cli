@@ -19,7 +19,7 @@ command 'pull-request' do |c|
   def extract_reviewers(args = [])
     args.collect { |user|
       user[1..-1] if user.start_with?("@")
-    }.compact!
+    }.compact
   end
 
   c.syntax = 'pull-request source target'
@@ -40,9 +40,6 @@ command 'pull-request' do |c|
       reviewers = extract_reviewers args
     end
 
-    #puts "#{source}; #{target}"
-    # puts reviewers.inspect
-    
     ensure_within_git! do
       cpr = CreatePullRequest.new($config)
       cpr.create_pull_request source, target, reviewers
