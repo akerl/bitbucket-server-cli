@@ -76,11 +76,12 @@ module Atlassian
         prPath = uri.path + '/projects/' + repoInfo.projectKey + '/repos/' + repoInfo.slug + '/pull-requests'
 
         req = Net::HTTP::Post.new(prPath, initheader = {'Content-Type' => 'application/json', 'Accept' => 'application/json'})
-        req.basic_auth @config["user"], @config["password"]
+        req.basic_auth @config["username"], @config["password"]
         req.body = resource.to_json
         http = Net::HTTP.new(uri.host, uri.port)
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE
         http.use_ssl = true
+
         response = http.start {|http| http.request(req) }
 
         if response.code != 201
