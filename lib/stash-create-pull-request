@@ -100,27 +100,3 @@ class CreatePullRequest
      
   end
 end
-
-def getCurrentBranch
-  %x(git symbolic-ref HEAD)[/refs\/heads\/(.*)/, 1]
-end
-
-def isInGitRepository
-  system('git rev-parse')
-end
-
-if __FILE__ == $0
-  if not isInGitRepository()
-    puts "fatal: Not a git repository"
-    Process.exit
-  elsif (ARGV.length == 2)
-    cpr = CreatePullRequest.new()
-    cpr.createPullRequest ARGV[0], ARGV[1]
-  elsif ARGV.length == 1
-    cpr = CreatePullRequest.new
-    cpr.createPullRequest getCurrentBranch(), ARGV[0]
-  else
-    puts "Usage: #{$0} source target"
-    Process.exit
-  end
-end
