@@ -33,12 +33,15 @@ command 'pull-request' do |c|
     source = args.shift
     if args.empty? or args[0].start_with?("@")
       target = source
-      source = 'foo'#get_current_branch()
+      source = get_current_branch()
       reviewers = extract_reviewers args
     else
       target = args.shift
       reviewers = extract_reviewers args
     end
+
+    #puts "#{source}; #{target}"
+    # puts reviewers.inspect
     
     ensure_within_git! do
       cpr = CreatePullRequest.new($config)
