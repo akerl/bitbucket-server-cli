@@ -8,7 +8,7 @@ module Atlassian
     class CreatePullRequestResource
       attr_accessor :resource
 
-      def initialize(projectKey, slug, title, description, source, target)
+      def initialize(projectKey, slug, title, description, reviewers, source, target)
         repository = {
         'slug' => slug,
         'project' => {
@@ -41,7 +41,11 @@ module Atlassian
 
       def extract_repository_info
         output = `git remote -v`.split(/\n/)[0].split(/\t/)[1]
-        matchData = output.match(/scm\/(\w+)\/(\w+).git/)
+        matchData = output.match(/\/(\w+)\/(\w+).git$/)
+
+        puts matchData
+
+        raise "Repository does not seem to be hosted in Stash" unless not matchData.nil? and matchData.length == 2
 
         RepoInfo.new(matchData[1], matchData[2])
       end
@@ -52,8 +56,8 @@ module Atlassian
       end
 
 
-      def create_pull_request(source, target)
-        puts "Creating PR from #{source} to #{target}"
+      def create_pull_request(source, target, reviewers)
+        puts "Creating PR from #{source} to #{target} with reviewers #{reviewers.inspect}"
 
         Process.exit if not target or not source
 
@@ -61,7 +65,7 @@ module Atlassian
         title = generate_pull_request_title source, target
         description = ''
 
-        resource = CreatePullRequestResource.new(repoInfo.projectKey, repoInfo.slug, title, description, source, target).resource
+        resource = CreatePullRequestResource.new(repoInfo.projectKey, repoInfo.slug, title, description, reviewers, source, target).resource
 
         uri = URI.parse(@config["stash_url"])
         prPath = uri.path + '/projects/' + repoInfo.projectKey + '/repos/' + repoInfo.slug + '/pull-requests'

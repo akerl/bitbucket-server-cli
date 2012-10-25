@@ -17,7 +17,7 @@ require '~/.StashGitConfig'
 class CreatePullRequestResource
   attr_accessor :resource
 
-  def initialize(projectKey, slug, title, description, source, target)
+  def initialize(projectKey, slug, title, description, reviewers, source, target)
     _title = title
     _repository = {
       'slug' => slug,
@@ -38,6 +38,12 @@ class CreatePullRequestResource
       'fromRef' => _fromRef,
       'toRef' => _toRef
     }
+
+    if reviewers and not reviewers.empty?
+      @resource.reviewers => {
+
+      }
+    end
   end
 end
 
@@ -52,14 +58,14 @@ class CreatePullRequest
     RepoInfo.new(matchData[1], matchData[2])
   end
 
-  def generatePullRequestTitle(source, target)
+  def generatePullRequestTitle(source, target, reviewers)
     output = %x(git log --reverse --format=%s #{target}..#{source}).split(/\n/)[0]
     return output || 'Merge \'%s\' into \'%s\'' % [source, target]
   end
 
 
   def createPullRequest(source, target, reviewers)
-    puts "Creating PR from #{source} to #{target}"
+    puts "Creating PR from #{source} to #{target} with reviewers #{reviewers.inspect}"
 
     Process.exit if not target or not source
 
@@ -68,7 +74,7 @@ class CreatePullRequest
     title = generatePullRequestTitle(source, target)
     description = ''
 
-    resource = CreatePullRequestResource.new(repoInfo.projectKey, repoInfo.slug, title, description, source, target).resource
+    resource = CreatePullRequestResource.new(repoInfo.projectKey, repoInfo.slug, title, description, reviewers, source, target).resource
 
     uri = URI.parse(StashGitConfig::StashUrl)
     prPath = uri.path + '/projects/' + repoInfo.projectKey + '/repos/' + repoInfo.slug + '/pull-requests'
