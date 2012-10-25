@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
-#require File.dirname(__FILE__) + "/../lib/stash_cli"
-require 'stash_cli'
+require File.dirname(__FILE__) + "/../lib/stash_cli"
+#require 'stash_cli'
 require 'commander/import'
 require 'yaml'
 
@@ -16,15 +16,33 @@ include Atlassian::Stash::Git
 $config = YAML.load_file(File.join(Etc.getpwuid.dir, ".stashconfig.yml"))
 
 command 'pull-request' do |c|
+  def extract_reviewers(args = [])
+    args.collect { |user|
+      user[1..-1] if user.start_with?("@")
+    }.compact!
+  end
+
   c.syntax = 'pull-request source target'
   c.description = 'Create a pull request in Stash'
   c.example 'stash pull-request topicBranch master', "Creates a pull request from branch 'topicBranch' into 'master'"
   c.action do |args, options|
-    source, target, *rest = args
-    raise "Please provide the name of the source and target ref" unless source && target
+    if args.length == 0
+      raise "Please provide the name of the source and target ref"
+    end
+
+    source = args.shift
+    if args.empty? or args[0].start_with?("@")
+      target = source
+      source = 'foo'#get_current_branch()
+      reviewers = extract_reviewers args
+    else
+      target = args.shift
+      reviewers = extract_reviewers args
+    end
+    
     ensure_within_git! do
       cpr = CreatePullRequest.new($config)
-      cpr.create_pull_request source, target
+      cpr.create_pull_request source, target, reviewers
     end
   end
 end

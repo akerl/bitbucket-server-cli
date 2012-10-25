@@ -58,7 +58,7 @@ class CreatePullRequest
   end
 
 
-  def createPullRequest(source, target)
+  def createPullRequest(source, target, reviewers)
     puts "Creating PR from #{source} to #{target}"
 
     Process.exit if not target or not source
