@@ -56,8 +56,6 @@ module Atlassian
 
 
       def create_pull_request(source, target, reviewers)
-        puts "Creating PR from #{source} to #{target} with reviewers #{reviewers.inspect}"
-
         Process.exit if not target or not source
 
         repoInfo = extract_repository_info
@@ -84,8 +82,7 @@ module Atlassian
           elsif responseBody['message']
             puts responseBody['message']
           else
-            puts 'An unknown error occurred'
-            puts response.code
+            puts 'An unknown error occurred. Status: #{response.code}.'
             puts response.body
           end
         else
