@@ -9,8 +9,9 @@ Build instructions
 
 Configuration
 -------------
-Create a file, `.stashconfig.yml` in your `$HOME` directory, with the following contents
+1. run `stash setup`
+2. Setup a Git alias! ``git config --global alias.create-pull-request "stash pull-request \"\$0\""``
+3. From your git repository, run `git create-pull-request master` to create a pull request from your current branch to master
 
-    username: YOUR_USERNAME
-    password: YOUR_PASSWORD
-    stash_url: http://localhost:7990/stash
+See the usage help for more information by running
+    stash help
