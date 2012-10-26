@@ -1,14 +1,10 @@
-Atlassian Stash CLI
-===================
+# Atlassian Stash Command Line Tools
 
-
-Build instructions
-------------------
+## Build instructions
 1. gem install bundler
 2. bundle install
 
-Configuration
--------------
+## Configuration
 1. run `stash setup`
 2. Setup a Git alias! 
 
