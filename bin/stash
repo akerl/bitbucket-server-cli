@@ -13,7 +13,40 @@ program :description, "Provides convenient functions for interacting with Atlass
 include Atlassian::Stash
 include Atlassian::Stash::Git
 
-$config = YAML.load_file(File.join(Etc.getpwuid.dir, ".stashconfig.yml"))
+$configFile = File.join(Etc.getpwuid.dir, ".stashconfig.yml")
+
+def load_config
+  raise "No Stash configuration found; please run setup" unless $configFile.exists?
+  config = YAML.load_file($configFile)
+  raise "Stash configuration file is incomplete, please re-run setup" unless $config['username'] and $config['password'] and $config['stash_url']
+  config
+end
+
+command 'setup' do |c|
+  c.syntax = 'setup'
+  c.description = 'Setup configuration details to your Stash instance'
+  c.example 'stash setup --username sebr --password s3cre7 --stash_url http://stash.mycompany.com', 'Setup Stash CLI with credentials to the Stash server'
+  c.option '--username user', String, 'Writes your Stash username to the configuration file'
+  c.option '--password password', String, 'Writes your Stash user password to the configuration file. If omitted, password will be prompted to be entered'
+  c.option '--stashUrl', String, 'Writes the Stash server url to the configuration file'
+  c.action do |args, options|
+    username = options.username ? options.username : ask("Stash Username: ")
+    password = options.password ? options.password : ask("Stash Password: ") { |q| q.echo = "*" }
+    stashUrl = options.stashUrl ? options.stashUrl : ask("Stash URL: ")
+
+    c = {
+      'username' => username.to_s,
+      'password' => password.to_s,
+      'stash_url' => stashUrl.to_s
+    }
+
+    File.open($configFile, 'w') do |out|
+      YAML.dump(c, out)
+    end
+
+    File.chmod 0600, $configFile
+  end
+end
 
 command 'pull-request' do |c|
   def extract_reviewers(args = [])
@@ -31,7 +64,7 @@ command 'pull-request' do |c|
     end
 
     source = args.shift
-    if args.empty? or args[0].start_with?("@")
+    if args.empty? or args.first.start_with?("@")
       target = source
       source = get_current_branch()
       reviewers = extract_reviewers args
@@ -41,7 +74,7 @@ command 'pull-request' do |c|
     end
 
     ensure_within_git! do
-      cpr = CreatePullRequest.new($config)
+      cpr = CreatePullRequest.new(load_config)
       cpr.create_pull_request source, target, reviewers
     end
   end

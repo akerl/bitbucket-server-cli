@@ -58,7 +58,7 @@ module Atlassian
       end
 
       def generate_pull_request_title(source, target)
-        output = %x(git log --reverse --format=%s #{target}..#{source}).split(/\n/)[0]
+        output = %x(git log --reverse --format=%s #{target}..#{source}).split(/\n/).first
         output || 'Merge \'%s\' into \'%s\'' % [source, target]
       end
 
@@ -87,7 +87,7 @@ module Atlassian
         if response.code != 201
           responseBody = JSON.parse(response.body)
           if responseBody['errors']
-            puts responseBody['errors'][0]['message']
+            puts responseBody['errors'].first['message']
           elsif responseBody['message']
             puts responseBody['message']
           else
