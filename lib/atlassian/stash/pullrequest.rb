@@ -84,10 +84,17 @@ module Atlassian
 
         response = http.start {|http| http.request(req) }
 
-        if response.code != 201
+        if not response.is_a? Net::HTTPCreated
           responseBody = JSON.parse(response.body)
           if responseBody['errors']
-            puts responseBody['errors'].first['message']
+            responseBody['errors'].collect { |error|
+              puts error['message']
+              if error['reviewerErrors']
+                error['reviewerErrors'].collect { |revError|
+                  puts revError['message']
+                }
+              end
+            }
           elsif responseBody['message']
             puts responseBody['message']
           else
@@ -97,8 +104,9 @@ module Atlassian
           end
         else
           responseBody = JSON.parse(response.body)
-          prUrl = uri.path + responseBody['id']
-          puts "Pull request created successfully: " + prUrl
+          prUri = uri.clone
+          prUri.path = prPath + '/' + responseBody['id'].to_s
+          puts prUri.to_s
         end
 
       end

@@ -16,9 +16,9 @@ include Atlassian::Stash::Git
 $configFile = File.join(Etc.getpwuid.dir, ".stashconfig.yml")
 
 def load_config
-  raise "No Stash configuration found; please run setup" unless $configFile.exists?
+  raise "No Stash configuration found; please run setup" unless File.exists? $configFile
   config = YAML.load_file($configFile)
-  raise "Stash configuration file is incomplete, please re-run setup" unless $config['username'] and $config['password'] and $config['stash_url']
+  raise "Stash configuration file is incomplete, please re-run setup" unless config['username'] and config['password'] and config['stash_url']
   config
 end
 

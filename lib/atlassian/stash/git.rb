@@ -12,7 +12,7 @@ module Atlassian
       end
 
       def get_remote_url
-        %x(git remote -v).split(/\s/)[1]
+        URI.extract(%x(git remote -v)).first
       end
 
       def ensure_within_git!
