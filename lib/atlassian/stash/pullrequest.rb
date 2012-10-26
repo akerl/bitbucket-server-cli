@@ -52,8 +52,6 @@ module Atlassian
         if m = get_remote_url.match(/\/(\w+)\/(\w+).git$/)
           return RepoInfo.new(m[1], m[2])
         end
-        puts "Remote url: #{get_remote_url}"
-
         raise "Repository does not seem to be hosted in Stash"
       end
 

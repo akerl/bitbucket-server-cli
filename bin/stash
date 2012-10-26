@@ -22,6 +22,8 @@ def load_config
   config
 end
 
+program :help_formatter, :compact
+
 command 'setup' do |c|
   c.syntax = 'setup'
   c.description = 'Setup configuration details to your Stash instance'
@@ -60,7 +62,8 @@ command 'pull-request' do |c|
   c.example 'stash pull-request topicBranch master', "Creates a pull request from branch 'topicBranch' into 'master'"
   c.action do |args, options|
     if args.length == 0
-      raise "Please provide the name of the source and target ref"
+      command(:help).run(*args)
+      Process.exit
     end
 
     source = args.shift
