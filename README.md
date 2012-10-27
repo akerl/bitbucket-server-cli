@@ -23,9 +23,11 @@ See the usage for command details
     stash help
 
 ## Troubleshooting
-Q: I installed the gem, but the `stash` command doesn't work.
+Q: I installed the gem, but the `stash` command doesn't work.  
 A: Do you have another command called `stash` or do you have an alias? Have a look where the command maps to
+
     $> which -a stash
+
 Then check the value of your $PATH
 
 ## I want to contribute
@@ -33,6 +35,7 @@ Thanks! Please [fork this project](https://bitbucket.org/atlassian/atlassian-sta
 
 ### Build instructions
 Building this gem is easy. To get started, run the following commands:
+
     $> gem install bundler
     $> bundler install
 
