@@ -24,8 +24,8 @@ end
 
 program :help_formatter, :compact
 
-command 'setup' do |c|
-  c.syntax = 'setup'
+command 'configure' do |c|
+  c.syntax = 'configure'
   c.description = 'Setup configuration details to your Stash instance'
   c.example 'stash setup --username sebr --password s3cre7 --stash_url http://stash.mycompany.com', 'Setup Stash CLI with credentials to the Stash server'
   c.option '--username user', String, 'Writes your Stash username to the configuration file'
@@ -47,6 +47,8 @@ command 'setup' do |c|
     end
 
     File.chmod 0600, $configFile
+
+    create_git_alias if agree "Create a git alias 'git create-pull-request'? "
   end
 end
 

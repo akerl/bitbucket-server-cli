@@ -22,6 +22,10 @@ module Atlassian
           raise "fatal: Not a git repository"
         end
       end
+
+      def create_git_alias
+        %x(git config --global alias.create-pull-request "\!sh -c 'stash pull-request \\$0'")
+      end
     end
   end
 end
