@@ -22,8 +22,6 @@ def load_config
   config
 end
 
-program :help_formatter, :compact
-
 command 'configure' do |c|
   c.syntax = 'configure'
   c.description = 'Setup configuration details to your Stash instance'
@@ -59,12 +57,13 @@ command 'pull-request' do |c|
     }.compact
   end
 
-  c.syntax = 'pull-request source target'
+  c.syntax = 'pull-request [sourceBranch] targetBranch [@reviewer1 @reviewer2]'
   c.description = 'Create a pull request in Stash'
-  c.example 'stash pull-request topicBranch master', "Creates a pull request from branch 'topicBranch' into 'master'"
+  c.example 'stash pull-request topicBranch master @michael', "Create a pull request from branch 'topicBranch' into 'master' with 'michael' added as a reviewer"
+  c.example 'stash pull-request master', "Create a pull request from the current git branch into 'master'"
   c.action do |args, options|
     if args.length == 0
-      command(:help).run(*args)
+      command(:help).run('pull-request')
       Process.exit
     end
 
@@ -86,5 +85,9 @@ command 'pull-request' do |c|
 end
 
 default_command :help
+program :help_formatter, :compact
+program :help, 'Authors', 'Seb Ruiz <sruiz@atlassian.com> with others'
+program :help, 'Website', 'https://bitbucket.org/atlassian/atlassian-stash-rubygem'
+
 
 # vim set ft=ruby

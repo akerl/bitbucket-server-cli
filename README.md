@@ -7,13 +7,18 @@ This command line helper for Stash is written in Ruby and is deployed as a [Ruby
 
 (Protip: you might need to `sudo`)
 
-Once the gem is installed, the command `stash` will be in your `$PATH`, so be 
+Once the gem is installed, the command `stash` will be in your `$PATH`
 
-## Configuration
-1. run `stash configure`
-2. From your git repository, run `git create-pull-request master` to create a pull request from your current branch to master
+## Configuration and usage
+Run `stash configure`. This will prompt for details about your Stash instance.
 
-See the usage help for more information by running
+### Creating a pull request
+Use the `pull-request` command to create a pull request in Stash. E.g:
+
+    $> stash pull-request topicBranch master @michael
+    Create a pull request from branch 'topicBranch' into 'master' with 'michael' added as a reviewer
+
+See the usage for command details 
 
     stash help
 
