@@ -15,7 +15,7 @@ require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "atlassian-stash"
-  gem.homepage = "https://bitbucket.org/atlassian/atlassian-stash-rubygem"
+  gem.homepage = "https://bitbucket.org/atlassian/stash-command-line-tools"
   gem.license = "MIT"
   gem.summary = "Command line tools for Atlassian Stash"
   gem.description = "Provides convenient functions for interacting with Atlassian Stash through the command line" 

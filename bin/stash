@@ -87,7 +87,7 @@ end
 default_command :help
 program :help_formatter, :compact
 program :help, 'Authors', 'Seb Ruiz <sruiz@atlassian.com> with others'
-program :help, 'Website', 'https://bitbucket.org/atlassian/atlassian-stash-rubygem'
+program :help, 'Website', 'https://bitbucket.org/atlassian/stash-command-line-tools'
 
 
 # vim set ft=ruby

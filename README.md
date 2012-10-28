@@ -31,7 +31,7 @@ A: Do you have another command called `stash` or do you have an alias? Have a lo
 Then check the value of your $PATH
 
 ## I want to contribute
-Thanks! Please [fork this project](https://bitbucket.org/atlassian/atlassian-stash-rubygem/fork) and create a pull request to submit changes back to the original project.
+Thanks! Please [fork this project](https://bitbucket.org/atlassian/stash-command-line-tools/fork) and create a pull request to submit changes back to the original project.
 
 ### Build instructions
 Building this gem is easy. To get started, run the following commands:
