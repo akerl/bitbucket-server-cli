@@ -16,16 +16,16 @@ include Atlassian::Stash::Git
 $configFile = File.join(Etc.getpwuid.dir, ".stashconfig.yml")
 
 def load_config
-  raise "No Stash configuration found; please run setup" unless File.exists? $configFile
+  raise "No Stash configuration found; please run configure" unless File.exists? $configFile
   config = YAML.load_file($configFile)
-  raise "Stash configuration file is incomplete, please re-run setup" unless config['username'] and config['password'] and config['stash_url']
+  raise "Stash configuration file is incomplete, please re-run configure" unless config['username'] and config['password'] and config['stash_url']
   config
 end
 
 command 'configure' do |c|
   c.syntax = 'configure'
   c.description = 'Setup configuration details to your Stash instance'
-  c.example 'stash setup --username sebr --password s3cre7 --stash_url http://stash.mycompany.com', 'Setup Stash CLI with credentials to the Stash server'
+  c.example 'stash configure --username sebr --password s3cre7 --stash_url http://stash.mycompany.com', 'Setup Stash CLI with credentials to the Stash server'
   c.option '--username user', String, 'Writes your Stash username to the configuration file'
   c.option '--password password', String, 'Writes your Stash user password to the configuration file. If omitted, password will be prompted to be entered'
   c.option '--stashUrl', String, 'Writes the Stash server url to the configuration file'
