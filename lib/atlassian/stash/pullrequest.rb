@@ -1,5 +1,4 @@
 require 'json'
-require 'net/http'
 require 'net/https'
 require 'uri'
 require 'git'
@@ -70,7 +69,7 @@ module Atlassian
 
         resource = CreatePullRequestResource.new(repoInfo.projectKey, repoInfo.slug, title, description, reviewers, source, target).resource
 
-        uri = URI.parse(@config["stash_url"])
+        uri = URI.parse(@config["stash_url"].downcase)
         prPath = uri.path + '/projects/' + repoInfo.projectKey + '/repos/' + repoInfo.slug + '/pull-requests'
 
         req = Net::HTTP::Post.new(prPath, initheader = {'Content-Type' => 'application/json', 'Accept' => 'application/json'})
@@ -78,7 +77,7 @@ module Atlassian
         req.body = resource.to_json
         http = Net::HTTP.new(uri.host, uri.port)
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-        http.use_ssl = true
+        http.use_ssl = uri.scheme.eql?("https")
 
         response = http.start {|http| http.request(req) }
 
