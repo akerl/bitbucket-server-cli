@@ -10,7 +10,7 @@ This command line helper for Stash is written in Ruby and is deployed as a [Ruby
 Once the gem is installed, the command `stash` will be in your `$PATH`
 
 ## Configuration and usage
-Run `stash configure`. This will prompt for details about your Stash instance.
+Run `stash configure`. This will prompt for details about your Stash instance. If no password is provided, then you will be prompted for a password when executing commands to Stash. Currently, the password is stored in plain text in a configuration file, `~/.stashconfig.yml` which is protected with a permission bit of `0600`. 
 
 ### Creating a pull request
 Use the `pull-request` command to create a pull request in Stash. E.g:

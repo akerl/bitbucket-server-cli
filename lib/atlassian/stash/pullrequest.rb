@@ -69,11 +69,17 @@ module Atlassian
 
         resource = CreatePullRequestResource.new(repoInfo.projectKey, repoInfo.slug, title, description, reviewers, source, target).resource
 
+        username = @config["username"]
+        password = @config["password"]
+
+        username = ask("Username: ") unless @config["username"]
+        password = ask("Password: ") { |q| q.echo = '*' } unless @config["password"]
+
         uri = URI.parse(@config["stash_url"].downcase)
         prPath = uri.path + '/projects/' + repoInfo.projectKey + '/repos/' + repoInfo.slug + '/pull-requests'
 
         req = Net::HTTP::Post.new(prPath, initheader = {'Content-Type' => 'application/json', 'Accept' => 'application/json'})
-        req.basic_auth @config["username"], @config["password"]
+        req.basic_auth username, password
         req.body = resource.to_json
         http = Net::HTTP.new(uri.host, uri.port)
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE
