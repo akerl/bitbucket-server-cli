@@ -13,7 +13,7 @@ program :description, "Provides convenient functions for interacting with Atlass
 include Atlassian::Stash
 include Atlassian::Stash::Git
 
-$configFile = File.join(Etc.getpwuid.dir, ".stashconfig.yml")
+$configFile = File.join(ENV['HOME'], ".stashconfig.yml")
 
 def load_config
   raise "No Stash configuration found; please run configure" unless File.exists? $configFile
