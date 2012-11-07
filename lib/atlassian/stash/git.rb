@@ -11,8 +11,13 @@ module Atlassian
         system('git rev-parse')
       end
 
+      def get_remotes
+        %x(git remote -v)
+      end
+
       def get_remote_url
-        URI.extract(%x(git remote -v)).first
+        origin = get_remotes.split("\n").collect { |r| r.strip }.grep(/^origin.*\(push\)$/).first
+        URI.extract(origin).first
       end
 
       def ensure_within_git!
