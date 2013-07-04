@@ -1,5 +1,13 @@
 require 'rubygems'
 require 'bundler'
+
+if ENV["COVERAGE"]
+  require "simplecov"
+  SimpleCov.start :test_frameworks do
+    add_filter "/vendor/"
+  end
+end
+
 begin
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
