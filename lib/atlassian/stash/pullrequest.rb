@@ -29,7 +29,7 @@ module Atlassian
           'toRef' => toRef
         }
 
-        @resource["reviewers"] = reviewers.collect { |r| 
+        @resource["reviewers"] = reviewers.collect { |r|
             {
               'user' => {
                 'name' => r
@@ -59,7 +59,6 @@ module Atlassian
         output || 'Merge \'%s\' into \'%s\'' % [source, target]
       end
 
-
       def create_pull_request(source, target, reviewers)
         Process.exit if not target or not source
 
@@ -71,6 +70,7 @@ module Atlassian
 
         username = @config["username"]
         password = @config["password"]
+        proxy_addr, proxy_port = parse_proxy(@config["proxy"])
 
         username = ask("Username: ") unless @config["username"]
         password = ask("Password: ") { |q| q.echo = '*' } unless @config["password"]
@@ -81,7 +81,7 @@ module Atlassian
         req = Net::HTTP::Post.new(prPath, initheader = {'Content-Type' => 'application/json', 'Accept' => 'application/json'})
         req.basic_auth username, password
         req.body = resource.to_json
-        http = Net::HTTP.new(uri.host, uri.port)
+        http = Net::HTTP.new(uri.host, uri.port, proxy_addr, proxy_port)
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE
         http.use_ssl = uri.scheme.eql?("https")
 
@@ -111,7 +111,20 @@ module Atlassian
           prUri.path = prPath + '/' + responseBody['id'].to_s
           puts prUri.to_s
         end
+      end
 
+      private
+
+      def parse_proxy(conf)
+        return nil, nil unless conf
+
+        addr, port = conf.split(":")
+        if port =~ /\d+/
+          port = port.to_i
+        else
+          port = nil
+        end
+        [addr, port]
       end
     end
   end
