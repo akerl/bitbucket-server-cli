@@ -81,7 +81,7 @@ module Atlassian
         req = Net::HTTP::Post.new(prPath, initheader = {'Content-Type' => 'application/json', 'Accept' => 'application/json'})
         req.basic_auth username, password
         req.body = resource.to_json
-        http = Net::HTTP::Proxy(proxy_addr, proxy_port).new(uri.host, uri.port)
+        http = Net::HTTP.new(uri.host, uri.port, proxy_addr, proxy_port)
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE
         http.use_ssl = uri.scheme.eql?("https")
 
