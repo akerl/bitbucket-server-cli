@@ -25,6 +25,7 @@ module Atlassian
         }
         @resource = {
           'title' => title,
+          'description' => description,
           'fromRef' => fromRef,
           'toRef' => toRef
         }
@@ -54,19 +55,16 @@ module Atlassian
         raise "Repository does not seem to be hosted in Stash"
       end
 
-      def generate_pull_request_title(source, target)
-        output = %x(git log --reverse --format=%s #{target}..#{source}).split(/\n/).first
-        output || 'Merge \'%s\' into \'%s\'' % [source, target]
-      end
-
       def create_pull_request(source, target, reviewers)
         Process.exit if not target or not source
 
-        repoInfo = extract_repository_info
-        title = generate_pull_request_title source, target
-        description = ''
+        @source = source
+        @target = target
 
-        resource = CreatePullRequestResource.new(repoInfo.projectKey, repoInfo.slug, title, description, reviewers, source, target).resource
+        repoInfo = extract_repository_info
+        title = generate_pull_request_title
+
+        resource = CreatePullRequestResource.new(repoInfo.projectKey, repoInfo.slug, title, description, reviewers, @source, @target).resource
 
         username = @config["username"]
         password = @config["password"]
@@ -114,6 +112,18 @@ module Atlassian
       end
 
       private
+
+      def generate_pull_request_title
+        git_commit_messages.lines.first || "Merge '#{@source}' into '#{@target}'"
+      end
+
+      def description
+        git_commit_messages
+      end
+
+      def git_commit_messages
+        @commit_messages ||= `git log --reverse --format=%s #{@target}..#{@source}`
+      end
 
       def parse_proxy(conf)
         return nil, nil unless conf
