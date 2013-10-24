@@ -82,7 +82,7 @@ module Atlassian
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE
         http.use_ssl = uri.scheme.eql?("https")
 
-        response = http.start {|http| http.request(req) }
+        response = http.start {|conn| conn.request(req) }
 
         if not response.is_a? Net::HTTPCreated
           responseBody = JSON.parse(response.body)
