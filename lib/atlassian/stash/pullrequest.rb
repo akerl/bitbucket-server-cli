@@ -75,7 +75,7 @@ module Atlassian
         uri = URI.parse(@config["stash_url"].downcase)
         prPath = uri.path + '/projects/' + repoInfo.projectKey + '/repos/' + repoInfo.slug + '/pull-requests'
 
-        req = Net::HTTP::Post.new(prPath, initheader = {'Content-Type' => 'application/json', 'Accept' => 'application/json'})
+        req = Net::HTTP::Post.new(prPath, {'Content-Type' => 'application/json', 'Accept' => 'application/json'})
         req.basic_auth username, password
         req.body = resource.to_json
         http = Net::HTTP.new(uri.host, uri.port, proxy_addr, proxy_port)
