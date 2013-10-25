@@ -2,6 +2,7 @@ require 'json'
 require 'net/https'
 require 'uri'
 require 'git'
+require 'launchy'
 
 module Atlassian
   module Stash
@@ -108,6 +109,7 @@ module Atlassian
           prUri = uri.clone
           prUri.path = prPath + '/' + responseBody['id'].to_s
           puts prUri.to_s
+          Launchy.open prUri.to_s
         end
       end
 
