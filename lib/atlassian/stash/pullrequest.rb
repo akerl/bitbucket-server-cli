@@ -62,7 +62,6 @@ module Atlassian
         @target = target
 
         repoInfo = extract_repository_info
-        title = generate_pull_request_title
 
         resource = CreatePullRequestResource.new(repoInfo.projectKey, repoInfo.slug, title, description, reviewers, @source, @target).resource
 
@@ -113,7 +112,7 @@ module Atlassian
 
       private
 
-      def generate_pull_request_title
+      def title
         git_commit_messages.lines.first || "Merge '#{@source}' into '#{@target}'"
       end
 
