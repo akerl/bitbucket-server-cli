@@ -109,7 +109,10 @@ module Atlassian
           prUri = uri.clone
           prUri.path = prPath + '/' + responseBody['id'].to_s
           puts prUri.to_s
-          Launchy.open prUri.to_s if options.open
+
+          if @config["open"] || options.open
+            Launchy.open prUri.to_s
+          end
         end
       end
 
