@@ -58,8 +58,9 @@ command 'pull-request' do |c|
     }.compact
   end
 
-  c.syntax = 'pull-request [sourceBranch] targetBranch [@reviewer1 @reviewer2]'
+  c.syntax = 'pull-request [sourceBranch] targetBranch [@reviewer1 @reviewer2] [options]'
   c.description = 'Create a pull request in Stash'
+  c.option '-o', '--open', 'Open the created pull request page in a web browser'
   c.example 'stash pull-request topicBranch master @michael', "Create a pull request from branch 'topicBranch' into 'master' with 'michael' added as a reviewer"
   c.example 'stash pull-request master', "Create a pull request from the current git branch into 'master'"
   c.action do |args, options|
@@ -80,7 +81,7 @@ command 'pull-request' do |c|
 
     ensure_within_git! do
       cpr = CreatePullRequest.new(load_config)
-      cpr.create_pull_request source, target, reviewers
+      cpr.create_pull_request source, target, reviewers, options
     end
   end
 end

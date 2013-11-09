@@ -2,6 +2,7 @@ require 'json'
 require 'net/https'
 require 'uri'
 require 'git'
+require 'launchy'
 
 module Atlassian
   module Stash
@@ -55,7 +56,7 @@ module Atlassian
         raise "Repository does not seem to be hosted in Stash"
       end
 
-      def create_pull_request(source, target, reviewers)
+      def create_pull_request(source, target, reviewers, options)
         Process.exit if not target or not source
 
         @source = source
@@ -108,6 +109,10 @@ module Atlassian
           prUri = uri.clone
           prUri.path = prPath + '/' + responseBody['id'].to_s
           puts prUri.to_s
+
+          if @config["open"] || options.open
+            Launchy.open prUri.to_s
+          end
         end
       end
 

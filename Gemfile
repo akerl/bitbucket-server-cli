@@ -6,6 +6,7 @@ source "http://rubygems.org"
 gem "git"
 gem "json"
 gem "commander"
+gem "launchy"
 
 # Add dependencies to develop your gem here.
 # Include everything needed to run rake, tests, features, etc.
