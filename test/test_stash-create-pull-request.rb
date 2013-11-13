@@ -27,6 +27,24 @@ class TestStashCreatePullRequest < Test::Unit::TestCase
     assert_equal 'stash-repository', ri.slug
   end
 
+  should "to_sentence_case" do
+    cpr = CreatePullRequest.new nil
+
+    assert_equal "", cpr.to_sentence_case("")
+
+    assert_equal "A", cpr.to_sentence_case("a")
+    assert_equal "1", cpr.to_sentence_case("1")
+    assert_equal "\uDCA9", cpr.to_sentence_case("\uDCA9")
+
+    assert_equal "Abc def", cpr.to_sentence_case("abc def")
+
+    assert_equal "False", cpr.to_sentence_case(false)
+    assert_equal "True", cpr.to_sentence_case(true)
+    assert_equal "", cpr.to_sentence_case(nil)
+    assert_equal "0", cpr.to_sentence_case(0)
+    assert_equal "1", cpr.to_sentence_case(1)
+  end
+
   context "#parse_proxy" do
     setup do
       @cpr = CreatePullRequest.new nil
