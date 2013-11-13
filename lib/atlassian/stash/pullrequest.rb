@@ -130,25 +130,6 @@ module Atlassian
         @commit_messages ||= `git log --reverse --format=%s #{@target}..#{@source}`
       end
 
-      def convert_branch_name_to_sentence(branch_name)
-        return '' if branch_name.nil?
-
-        issue_key_regex = /([A-Z]{1,10}-\d+)/
-        branch_components = branch_name.split(issue_key_regex);
-
-        parts = branch_componenets.each_with_index.map { |value, index| 
-          (index % 2 === 0) ? value.replace(/[\-_]/g, ' ') : value
-        }
-
-        to_sentence_case(parts.join(''))
-      end
-
-      def to_sentence_case(str)
-        return '' if str.nil? or str.empty?
-
-        str[0].upcase + str.slice(1, str.length)
-      end
-
       def parse_proxy(conf)
         return nil, nil unless conf
 
