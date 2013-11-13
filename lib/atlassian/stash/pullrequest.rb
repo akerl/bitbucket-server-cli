@@ -4,6 +4,8 @@ require 'uri'
 require 'git'
 require 'launchy'
 
+include Atlassian::Util::TextUtil
+
 module Atlassian
   module Stash
     class CreatePullRequestResource
@@ -119,7 +121,7 @@ module Atlassian
       private
 
       def title
-        git_commit_messages.lines.first || "Merge '#{@source}' into '#{@target}'"
+        convert_branch_name_to_sentence(@source) || "Merge '#{@source}' into '#{@target}'"
       end
 
       def description
