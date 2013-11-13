@@ -37,6 +37,6 @@ Thanks! Please [fork this project](https://bitbucket.org/atlassian/stash-command
 Building this gem is easy. To get started, run the following commands:
 
     $> gem install bundler
-    $> bundler install
+    $> bundle install
 
 Now start hacking, and run the stash command by invoking `./bin/stash command`
