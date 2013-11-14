@@ -29,7 +29,7 @@ See the usage for command details
 Q: I installed the gem, but the `stash` command doesn't work.  
 A: Do you have another command called `stash` or do you have an alias? Have a look where the command maps to
 
-    :::none
+    :::bash
         $> which -a stash
 
 Then check the value of your $PATH
@@ -40,7 +40,7 @@ Thanks! Please [fork this project](https://bitbucket.org/atlassian/stash-command
 ### Build instructions
 Building this gem is easy. To get started, run the following commands:
 
-    :::none
+    :::text
         $> gem install bundler
         $> bundle install
 
