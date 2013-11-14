@@ -15,12 +15,14 @@ Run `stash configure`. This will prompt for details about your Stash instance. I
 ### Creating a pull request
 Use the `pull-request` command to create a pull request in Stash. E.g:
 
-    $> stash pull-request topicBranch master @michael
-    Create a pull request from branch 'topicBranch' into 'master' with 'michael' added as a reviewer
+    :::bash
+        $> stash pull-request topicBranch master @michael
+        Create a pull request from branch 'topicBranch' into 'master' with 'michael' added as a reviewer
 
 See the usage for command details 
 
-    stash help
+    :::none
+        stash help
 
 ## Troubleshooting
 Q: I installed the gem, but the `stash` command doesn't work.  
