@@ -3,7 +3,8 @@
 ## Installing this tool
 This command line helper for Stash is written in Ruby and is deployed as a [Ruby Gem](https://rubygems.org/gems/atlassian-stash/). Installation is easy, simply run the following command
 
-    $> gem install atlassian-stash
+	:::none
+        $> gem install atlassian-stash
 
 (Protip: you might need to `sudo`)
 
@@ -15,7 +16,7 @@ Run `stash configure`. This will prompt for details about your Stash instance. I
 ### Creating a pull request
 Use the `pull-request` command to create a pull request in Stash. E.g:
 
-    :::bash
+    :::none
         $> stash pull-request topicBranch master @michael
         Create a pull request from branch 'topicBranch' into 'master' with 'michael' added as a reviewer
 
@@ -28,7 +29,8 @@ See the usage for command details
 Q: I installed the gem, but the `stash` command doesn't work.  
 A: Do you have another command called `stash` or do you have an alias? Have a look where the command maps to
 
-    $> which -a stash
+    :::none
+        $> which -a stash
 
 Then check the value of your $PATH
 
@@ -38,7 +40,8 @@ Thanks! Please [fork this project](https://bitbucket.org/atlassian/stash-command
 ### Build instructions
 Building this gem is easy. To get started, run the following commands:
 
-    $> gem install bundler
-    $> bundle install
+    :::none
+        $> gem install bundler
+        $> bundle install
 
 Now start hacking, and run the stash command by invoking `./bin/stash command`
