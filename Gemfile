@@ -14,7 +14,7 @@ group :development do
   gem "shoulda", ">= 0"
   gem "rdoc", "~> 3.12"
   gem "bundler", ">= 1.2.0"
-  gem "jeweler", "~> 1.8.4"
+  gem "jeweler", "~> 2.0.0"
   gem "rcov", ">= 0", :platforms => :ruby_18
   gem "simplecov", ">= 0", :platforms => :ruby_19, :require => "false"
 end
