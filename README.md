@@ -23,7 +23,19 @@ Use the `pull-request` command to create a pull request in Stash. E.g:
 See the usage for command details 
 
     :::text
-        stash help
+        stash help pull-request
+
+### Opening the Stash web UI
+Use the `browse` command to open the Stash UI for your repository in the browser.
+
+    :::text
+        $> stash browse -b develop
+        Open the browser at the Stash repository page for the branch 'develop'
+
+For more options, see the help
+
+    :::text
+        stash help browse
 
 ## Troubleshooting
 Q: I installed the gem, but the `stash` command doesn't work.  

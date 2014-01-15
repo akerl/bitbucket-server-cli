@@ -45,17 +45,8 @@ module Atlassian
 
     class CreatePullRequest
 
-      RepoInfo = Struct.new(:projectKey, :slug)
-
       def initialize(config)
         @config = config
-      end
-
-      def extract_repository_info (url = get_remote_url)
-        if m = url.match(/\/([a-zA-Z~][a-zA-Z0-9_]*)\/([[:alnum:]][\w\-\.]*).git$/)
-          return RepoInfo.new(m[1], m[2])
-        end
-        raise "Repository does not seem to be hosted in Stash"
       end
 
       def create_pull_request(source, target, reviewers, options)
@@ -64,7 +55,7 @@ module Atlassian
         @source = source
         @target = target
 
-        repoInfo = extract_repository_info
+        repoInfo = RepoInfo.create(@config)
 
         resource = CreatePullRequestResource.new(repoInfo.projectKey, repoInfo.slug, title, description, reviewers, @source, @target).resource
 
@@ -76,7 +67,7 @@ module Atlassian
         password = ask("Password: ") { |q| q.echo = '*' } unless @config["password"]
 
         uri = URI.parse(@config["stash_url"])
-        prPath = uri.path + '/projects/' + repoInfo.projectKey + '/repos/' + repoInfo.slug + '/pull-requests'
+        prPath = repoInfo.repoPath + '/pull-requests'
          
         req = Net::HTTP::Post.new(uri.query.nil? ? "#{prPath}" : "#{prPath}?#{uri.query}", {'Content-Type' => 'application/json', 'Accept' => 'application/json'})
         req.basic_auth username, password
