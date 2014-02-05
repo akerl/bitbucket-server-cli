@@ -3,8 +3,10 @@
 ## Installing this tool
 This command line helper for Stash is written in Ruby and is deployed as a [Ruby Gem](https://rubygems.org/gems/atlassian-stash/). Installation is easy, simply run the following command
 
-	:::text
-        $> gem install atlassian-stash
+```
+#!text
+$> gem install atlassian-stash
+```
 
 (Protip: you might need to `sudo`)
 
@@ -16,44 +18,56 @@ Run `stash configure`. This will prompt for details about your Stash instance. I
 ### Creating a pull request
 Use the `pull-request` command to create a pull request in Stash. For example:
 
-``` .txt
-    $> stash pull-request topicBranch master @michael
-    Create a pull request from branch 'topicBranch' into 'master' with 'michael' added as a reviewer
+```
+#!text
+$> stash pull-request topicBranch master @michael
+Create a pull request from branch 'topicBranch' into 'master' with 'michael' added as a reviewer
+```
 
 See the usage for command details 
 
-``` .txt
-    stash help pull-request
+```
+#!text
+$> stash help pull-request
+```
 
 ### Opening the Stash web UI
 Use the `browse` command to open the Stash UI for your repository in the browser.
 
-``` .txt
-    $> stash browse -b develop
-    Open the browser at the Stash repository page for the branch 'develop'
+```
+#!text
+$> stash browse -b develop
+Open the browser at the Stash repository page for the branch 'develop'
+```
 
 For more options, see the help
 
-``` .txt
-    stash help browse
+```
+#!text
+stash help browse
+```
 
 ## Configuration options
 
 Running `stash configure` will prepopulate `~/.stashconfig.yml` with a variety of options. Complete options are:
 
-``` .yml
-    username: seb # username to connect to stash server.
-    password: s3cr3t # password for user. If ommitted, you will be prompted at the terminal when making a request to Stash
-    stash_url: https://stash.server.com # fully qualified stash url
-    open: true # opens newly created pull requests in the browser
-    ssl_no_verify: true # do not check ssl certificates for the configured stash server
+```
+#!yaml
+username: seb # username to connect to stash server.
+password: s3cr3t # password for user. If ommitted, you will be prompted at the terminal when making a request to Stash
+stash_url: https://stash.server.com # fully qualified stash url
+open: true # opens newly created pull requests in the browser
+ssl_no_verify: true # do not check ssl certificates for the configured stash server
+```
 
 ## Troubleshooting
 Q: I installed the gem, but the `stash` command doesn't work.  
 A: Do you have another command called `stash` or do you have an alias? Have a look where the command maps to
 
-``` .txt
-    $> which -a stash
+```
+#!text
+$> which -a stash
+```
 
 Then check the value of your $PATH
 
@@ -63,8 +77,10 @@ Thanks! Please [fork this project](https://bitbucket.org/atlassian/stash-command
 ### Build instructions
 Building this gem is easy. To get started, run the following commands:
 
-``` .txt
-    $> gem install bundler
-    $> bundle install
+```
+#!text
+$> gem install bundler
+$> bundle install
+```
 
 Now start hacking, and run the stash command by invoking `./bin/stash command`
