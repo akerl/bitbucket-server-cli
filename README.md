@@ -14,7 +14,7 @@ Once the gem is installed, the command `stash` will be in your `$PATH`
 Run `stash configure`. This will prompt for details about your Stash instance. If no password is provided, then you will be prompted for a password when executing commands to Stash. Currently, the password is stored in plain text in a configuration file, `~/.stashconfig.yml` which is protected with a permission bit of `0600`. 
 
 ### Creating a pull request
-Use the `pull-request` command to create a pull request in Stash. E.g:
+Use the `pull-request` command to create a pull request in Stash. For example:
 
     :::text
         $> stash pull-request topicBranch master @michael
@@ -36,6 +36,17 @@ For more options, see the help
 
     :::text
         stash help browse
+
+## Configuration options
+
+Running `stash configure` will prepopulate `~/.stashconfig.yml` with a variety of options. Complete options are:
+
+    :::text
+        username: seb # username to connect to stash server.
+        password: s3cr3t # password for user. If ommitted, you will be prompted at the terminal when making a request to Stash
+        stash_url: https://stash.server.com # fully qualified stash url
+        open: true # opens newly created pull requests in the browser
+        ssl_no_verify: true # do not check ssl certificates for the configured stash server
 
 ## Troubleshooting
 Q: I installed the gem, but the `stash` command doesn't work.  

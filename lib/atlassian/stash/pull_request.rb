@@ -73,7 +73,7 @@ module Atlassian
         req.basic_auth username, password
         req.body = resource.to_json
         http = Net::HTTP.new(uri.host, uri.port, proxy_addr, proxy_port)
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE if @config["ssl_no_verify"]
         http.use_ssl = uri.scheme.eql?("https")
 
         response = http.start {|conn| conn.request(req) }
