@@ -28,10 +28,11 @@ module Atlassian
         }
         @resource = {
           'title' => title,
-          'description' => description,
           'fromRef' => fromRef,
           'toRef' => toRef
         }
+
+        @resource["description"] = description unless description.empty?
 
         @resource["reviewers"] = reviewers.collect { |r|
             {
