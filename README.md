@@ -95,8 +95,20 @@ $> rake test
 
 ### Releasing
 
-Just as easy:
+#### Bumping versions
+
+Use `rake version`:
 
 ```
-$> rake test
+version             -- displays the current version
+version:bump:major  -- bump the major version by 1
+version:bump:minor  -- bump the a minor version by 1
+version:bump:patch  -- bump the patch version by 1
+version:write       -- writes out an explicit version
+```
+
+#### Releasing
+
+```
+$> rake release
 ```
