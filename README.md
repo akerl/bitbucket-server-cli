@@ -84,3 +84,19 @@ $> bundle install
 ```
 
 Now start hacking, and run the stash command by invoking `./bin/stash command`
+
+### Testing
+
+Easy:
+
+```
+$> rake test
+```
+
+### Releasing
+
+Just as easy:
+
+```
+$> rake test
+```
