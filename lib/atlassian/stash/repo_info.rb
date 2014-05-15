@@ -38,7 +38,7 @@ module Atlassian
       end
 
       def self.create (config, url = get_remote_url)
-        if m = url.match(/\/([a-zA-Z~][a-zA-Z0-9_]*)\/([[:alnum:]][\w\-\.]*).git$/)
+        if m = url.match(/\/([a-zA-Z~][a-zA-Z0-9_\-]*)\/([[:alnum:]][\w\-\.]*).git$/)
           return RepoInfo.new(config, m[1], m[2])
         end
         raise "Repository does not seem to be hosted in Stash; Remote url: " + url
