@@ -60,6 +60,7 @@ command 'pull-request' do |c|
 
   c.syntax = 'pull-request [sourceBranch] targetBranch [@reviewer1 @reviewer2] [options]'
   c.description = 'Create a pull request in Stash'
+  c.option '-r', '--remote remote', String, 'Bases the pull request from this git remote'
   c.option '-o', '--open', 'Open the created pull request page in a web browser'
   c.example 'stash pull-request topicBranch master @michael', "Create a pull request from branch 'topicBranch' into 'master' with 'michael' added as a reviewer"
   c.example 'stash pull-request master', "Create a pull request from the current git branch into 'master'"
