@@ -24,5 +24,5 @@ $LOAD_PATH.unshift(File.dirname(__FILE__))
 require File.dirname(__FILE__) + "/../lib/stash_cli"
 
 
-class Minitest::Unit::TestCase
+class Minitest::Test
 end

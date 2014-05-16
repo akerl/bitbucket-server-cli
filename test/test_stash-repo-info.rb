@@ -3,7 +3,7 @@ require 'helper'
 include Atlassian::Stash
 include Atlassian::Stash::Git
 
-class TestStashRepoInfo < Minitest::Unit::TestCase
+class TestStashRepoInfo < Minitest::Test
 
   context "Extract repository info" do
     should "extract project key and repo slug from Stash remote" do

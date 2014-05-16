@@ -3,7 +3,7 @@ require 'helper'
 include Atlassian::Stash
 include Atlassian::Stash::Git
 
-class TestStashCreatePullRequest < Minitest::Unit::TestCase
+class TestStashCreatePullRequest < Minitest::Test
 
   context "#parse_proxy" do
     setup do
