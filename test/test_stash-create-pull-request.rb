@@ -40,4 +40,45 @@ class TestStashCreatePullRequest < Minitest::Test
       end
     end
   end
+
+  context '#title_and_description' do
+    setup do
+      @cpr = CreatePullRequest.new nil
+      def @cpr.title_from_branch; 'title_from_branch'; end
+      def @cpr.git_commit_messages; 'git_commit_messages'; end
+      @options = Struct.new(:title, :description)
+    end
+
+    context 'with no options' do
+      should 'sets default title and description' do
+        title, descr = @cpr.send(:title_and_description, @options.new(nil, nil))
+        assert_equal title, 'title_from_branch'
+        assert_equal descr, 'git_commit_messages'
+      end
+    end
+
+    context 'with title option' do
+      should 'sets custom title and default description' do
+        title, descr = @cpr.send(:title_and_description, @options.new('custom title', nil))
+        assert_equal title, 'custom title'
+        assert_equal descr, 'git_commit_messages'
+      end
+    end
+
+    context 'with description option' do
+      should 'sets default title and custom description' do
+        title, descr = @cpr.send(:title_and_description, @options.new(nil, 'custom description'))
+        assert_equal title, 'title_from_branch'
+        assert_equal descr, 'custom description'
+      end
+    end
+
+    context 'with both title and description options' do
+      should 'sets custom title and description' do
+        title, descr = @cpr.send(:title_and_description, @options.new('custom title', 'custom description'))
+        assert_equal title, 'custom title'
+        assert_equal descr, 'custom description'
+      end
+    end
+  end
 end
