@@ -56,7 +56,8 @@ module Atlassian
         @source = source
         @target = target
 
-        repoInfo = RepoInfo.create(@config, get_remote_url(options.remote))
+        remote = get_remote_url(options.remote || @config["remote"])
+        repoInfo = RepoInfo.create(@config, remote)
 
         resource = CreatePullRequestResource.new(repoInfo.projectKey, repoInfo.slug, title, description, reviewers, @source, @target).resource
 

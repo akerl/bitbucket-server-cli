@@ -29,10 +29,12 @@ command 'configure' do |c|
   c.option '--username user', String, 'Writes your Stash username to the configuration file'
   c.option '--password password', String, 'Writes your Stash user password to the configuration file. If omitted, password will be prompted to be entered'
   c.option '--stashUrl', String, 'Writes the Stash server url to the configuration file'
+  c.option '--remote', String, 'Pull requests are created in the Stash repository specified by the given remote'
   c.action do |args, options|
     username = options.username ? options.username : ask("Stash Username: ")
     password = options.password ? options.password : ask("Stash Password (optional): ") { |q| q.echo = "*" }
     stashUrl = options.stashUrl ? options.stashUrl : ask("Stash URL: ")
+    stashUrl = options.remote   ? options.remote   : ask("Stash Remote: ")
 
     c = {
       'stash_url' => stashUrl.to_s
@@ -60,7 +62,7 @@ command 'pull-request' do |c|
 
   c.syntax = 'pull-request [sourceBranch] targetBranch [@reviewer1 @reviewer2] [options]'
   c.description = 'Create a pull request in Stash'
-  c.option '-r', '--remote remote', String, 'Bases the pull request from this git remote'
+  c.option '-r', '--remote remote', String, 'Creates the pull request in the Stash repository specified by the given remote'
   c.option '-o', '--open', 'Open the created pull request page in a web browser'
   c.example 'stash pull-request topicBranch master @michael', "Create a pull request from branch 'topicBranch' into 'master' with 'michael' added as a reviewer"
   c.example 'stash pull-request master', "Create a pull request from the current git branch into 'master'"
