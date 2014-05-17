@@ -58,6 +58,8 @@ module Atlassian
 
         repoInfo = RepoInfo.create(@config)
 
+        title, description = title_and_description(options)
+
         resource = CreatePullRequestResource.new(repoInfo.projectKey, repoInfo.slug, title, description, reviewers, @source, @target).resource
 
         username = @config["username"]
@@ -112,12 +114,8 @@ module Atlassian
 
       private
 
-      def title
+      def title_from_branch
         convert_branch_name_to_sentence(@source) || "Merge '#{@source}' into '#{@target}'"
-      end
-
-      def description
-        git_commit_messages
       end
 
       def git_commit_messages
@@ -134,6 +132,13 @@ module Atlassian
           port = nil
         end
         [addr, port]
+      end
+
+      def title_and_description(options)
+        descr = (options.description or git_commit_messages)
+        title = (options.title or title_from_branch)
+
+        [title, descr]
       end
     end
   end
