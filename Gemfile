@@ -17,4 +17,5 @@ group :development do
   gem "jeweler", "~> 2.0.0"
   gem "rcov", ">= 0", :platforms => :ruby_18
   gem "simplecov", ">= 0", :platforms => :ruby_19, :require => "false"
+  gem "minitest", ">= 0", :platforms => :ruby_19
 end

@@ -3,7 +3,7 @@ require 'helper'
 include Atlassian::Stash
 include Atlassian::Stash::Git
 
-class TestStashRepoInfo < Test::Unit::TestCase
+class TestStashRepoInfo < Minitest::Test
 
   context "Extract repository info" do
     should "extract project key and repo slug from Stash remote" do
@@ -15,7 +15,7 @@ class TestStashRepoInfo < Test::Unit::TestCase
 
     should "extracting project key and repo slug from non stash url raises exception" do
       remote = "git@bitbucket.org:sebr/atlassian-stash-rubygem.git"
-      assert_raise(RuntimeError) { RepoInfo.create nil, remote }
+      assert_raises(RuntimeError) { RepoInfo.create nil, remote }
     end
 
     should "repo with hyphes" do

@@ -1,7 +1,7 @@
 
 include Atlassian::Util::TextUtil
 
-class TextUtilTest < Test::Unit::TestCase
+class TextUtilTest < Minitest::Test
 
   context "to_sentence_case" do
     should "work with an empty string" do

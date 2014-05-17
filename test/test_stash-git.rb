@@ -3,7 +3,7 @@ require 'helper'
 include Atlassian::Stash
 include Atlassian::Stash::Git
 
-class TestGit < Test::Unit::TestCase
+class TestGit < Minitest::Test
 
 	should "extract remote with ssh remote" do
 		Atlassian::Stash::Git.instance_eval do
