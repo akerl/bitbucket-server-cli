@@ -5,6 +5,7 @@ require File.dirname(__FILE__) + "/../lib/stash_cli"
 require 'commander/import'
 require 'yaml'
 require 'launchy'
+require 'pathname'
 
 program :name, "Atlassian Stash CLI"
 program :version, Atlassian::Stash::Version::STRING
@@ -19,7 +20,16 @@ def load_config
   raise "No Stash configuration found; please run configure" unless File.exists? $configFile
   config = YAML.load_file($configFile)
   raise "Stash configuration file is incomplete, please re-run configure" unless config['username'] and config['stash_url']
+  config.merge! repo_config
   config
+end
+
+def repo_config
+  return @repo_config if @repo_config
+  ascender = Pathname.pwd.to_enum(:ascend)
+  config_path = ascender.detect { |path| (path + '.stash').exist? }
+  @repo_config = YAML.load_file(path + '.stash')
+  @repo_config
 end
 
 command 'configure' do |c|
@@ -29,10 +39,12 @@ command 'configure' do |c|
   c.option '--username user', String, 'Writes your Stash username to the configuration file'
   c.option '--password password', String, 'Writes your Stash user password to the configuration file. If omitted, password will be prompted to be entered'
   c.option '--stashUrl', String, 'Writes the Stash server url to the configuration file'
+  c.option '--remote', String, 'Pull requests will be created in the Stash repository specified by the given remote'
   c.action do |args, options|
     username = options.username ? options.username : ask("Stash Username: ")
     password = options.password ? options.password : ask("Stash Password (optional): ") { |q| q.echo = "*" }
     stashUrl = options.stashUrl ? options.stashUrl : ask("Stash URL: ")
+    remote   = options.remote   ? options.remote   : ask("Remote (optional): ")
 
     c = {
       'stash_url' => stashUrl.to_s
@@ -40,6 +52,7 @@ command 'configure' do |c|
 
     c['username'] = username.to_s unless username.empty?
     c['password'] = password.to_s unless password.empty?
+    c['remote']   = remote.to_s   unless remote.empty?
 
     File.open($configFile, 'w') do |out|
       YAML.dump(c, out)
@@ -53,7 +66,8 @@ end
 
 command 'pull-request' do |c|
   def extract_reviewers(args = [])
-    args.collect { |user|
+    default_reviewers = Array(repo_config[:reviewers])
+    default_reviewers.concat args.collect { |user|
       user[1..-1] if user.start_with?("@")
     }.compact
   end
@@ -62,6 +76,7 @@ command 'pull-request' do |c|
   c.description = 'Create a pull request in Stash'
   c.option '-d DESCRIPTION', '--description DESCRIPTION', String, 'Use the following description when creating the pull request'
   c.option '-T TITLE', '--title TITLE', String, 'Use the following title when creating the pull request'
+  c.option '-r remote', '--remote remote', String, 'Creates the pull request in the Stash repository specified by the given remote'
   c.option '-o', '--open', 'Open the created pull request page in a web browser'
   c.example 'stash pull-request topicBranch master @michael', "Create a pull request from branch 'topicBranch' into 'master' with 'michael' added as a reviewer"
   c.example 'stash pull-request master', "Create a pull request from the current git branch into 'master'"
@@ -93,13 +108,19 @@ command 'browse' do |c|
   c.syntax = 'browse [browse|commits|pull-requests]'
   c.description = 'Open the Stash web ui for this repository'
   c.option '-b branch', '--branch branch', String, 'Open the Stash web ui at the specified branch, tag or commit hash. Defaults to the current branch'
+  c.option '-r remote', '--remote remote', String, 'Creates the pull request in the Stash repository specified by the given remote'
   c.example 'stash browse -b master', 'Open the files view for this repository at the current branch'
+  c.example 'stash browse -r upstream', 'Open the files view for the "upstream" remote repository'
 
   c.action do |args, options|
 
     tab = args.shift unless args.empty?
 
-    repoInfo = RepoInfo.create(load_config)
+    config = load_config
+    remote = options.remote || config['remote']
+    remote_url = get_remote_url(remote)
+
+    repoInfo = RepoInfo.create(config, remote_url)
 
     branch = options.branch || get_current_branch
 
