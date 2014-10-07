@@ -3,8 +3,8 @@ source "http://rubygems.org"
 # Example:
 #   gem "activesupport", ">= 2.3.5"
 
-gem "git", "~> 1.2.5"
-gem "json", "~> 1.7.5"
+gem "git", ">= 1.2.5"
+gem "json", ">= 1.7.5"
 gem "commander", "~> 4.1.2"
 gem "launchy", "~> 2.4.2"
 
