@@ -18,9 +18,12 @@ module Atlassian
         %x(git remote -v)
       end
 
-      def get_remote_url(remote = DEFAULT_REMOTE)
+      def get_remote_url(remote=nil)
         remotes = get_remotes
         return nil if remotes.empty?
+
+        remote = DEFAULT_REMOTE if remote.nil? || remote.empty?
+
         origin = remotes.split("\n").collect { |r| r.strip }.grep(/^#{remote}.*\(push\)$/).first
         return nil if origin.nil?
         URI.extract(origin).first

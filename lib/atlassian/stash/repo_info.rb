@@ -47,7 +47,8 @@ module Atlassian
           if remotes.empty?
             raise "No git remotes found, could not determine Stash project URL"
           else
-            raise "Could not find requested git remote '#{remote}'. Remotes found: \n" + remotes
+            remote = Atlassian::Stash::Git::DEFAULT_REMOTE if (remote.nil? || remote.empty?)
+            raise "Could not find requested git remote '#{remote}'. Remotes found: \r\n" + remotes
           end
         end
 

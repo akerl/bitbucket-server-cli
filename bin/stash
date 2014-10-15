@@ -34,7 +34,7 @@ def repo_config
   if (stash_config.exist? && stash_config.file?)
     @repo_config = YAML.load_file(stash_config)
   end
-  @repo_config
+  Hash.new
 end
 
 command 'configure' do |c|
