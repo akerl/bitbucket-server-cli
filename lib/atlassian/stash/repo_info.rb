@@ -37,11 +37,24 @@ module Atlassian
         uri.to_s
       end
 
-      def self.create (config, url = get_remote_url)
-        if m = url.match(/\/([a-zA-Z~][a-zA-Z0-9_\-]*)\/([[:alnum:]][\w\-\.]*).git$/)
+      def self.create (config, remote=nil)
+        config = Hash.new if config.nil?
+        remote = config["remote"] if (remote.nil? || remote.empty?)
+        remoteUrl = Atlassian::Stash::Git.get_remote_url(remote)
+
+        if remoteUrl.nil?
+          remotes = Atlassian::Stash::Git.get_remotes
+          if remotes.empty?
+            raise "No git remotes found, could not determine Stash project URL"
+          else
+            raise "Could not find requested git remote '#{remote}'. Remotes found: \n" + remotes
+          end
+        end
+
+        if m = remoteUrl.match(/\/([a-zA-Z~][a-zA-Z0-9_\-]*)\/([[:alnum:]][\w\-\.]*).git$/)
           return RepoInfo.new(config, m[1], m[2])
         end
-        raise "Repository does not seem to be hosted in Stash; Remote url: " + url
+        raise "Repository does not seem to be hosted in Stash; Remote url: " + remoteUrl
       end
     end
   end

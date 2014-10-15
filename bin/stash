@@ -71,7 +71,7 @@ end
 
 command 'pull-request' do |c|
   def extract_reviewers(args = [])
-    default_reviewers = repo_config.nil? ? [] : Array(repo_config[:reviewers])
+    default_reviewers = repo_config.nil? ? Array.new : Array(repo_config[:reviewers])
     default_reviewers.concat args.collect { |user|
       user[1..-1] if user.start_with?("@")
     }.compact
@@ -122,10 +122,8 @@ command 'browse' do |c|
     tab = args.shift unless args.empty?
 
     config = load_config
-    remote = options.remote || config['remote']
-    remote_url = get_remote_url(remote)
 
-    repoInfo = RepoInfo.create(config, remote_url)
+    repoInfo = RepoInfo.create(config, options.remote)
 
     branch = options.branch || get_current_branch
 

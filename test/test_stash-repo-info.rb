@@ -7,20 +7,21 @@ class TestStashRepoInfo < Minitest::Test
 
   context "Extract repository info" do
     should "extract project key and repo slug from Stash remote" do
-      remote = "https://sruiz@stash-dev.atlassian.com/scm/STASH/stash.git"
-      ri = RepoInfo.create nil, remote
+      Atlassian::Stash::Git.stubs(:get_remotes).returns("origin https://sruiz@stash-dev.atlassian.com/scm/STASH/stash.git (push)")
+
+      ri = RepoInfo.create({})
       assert_equal 'STASH', ri.projectKey
       assert_equal 'stash', ri.slug
     end
 
     should "extracting project key and repo slug from non stash url raises exception" do
-      remote = "git@bitbucket.org:sebr/atlassian-stash-rubygem.git"
-      assert_raises(RuntimeError) { RepoInfo.create nil, remote }
+      Atlassian::Stash::Git.stubs(:get_remotes).returns("origin git@bitbucket.org:sebr/atlassian-stash-rubygem.git (push)")
+      assert_raises(RuntimeError) { RepoInfo.create({}) }
     end
 
     should "repo with hyphes" do
-      remote = "https://sruiz@stash-dev.atlassian.com/scm/s745h/stash-repository.git"
-      ri = RepoInfo.create nil, remote
+      Atlassian::Stash::Git.stubs(:get_remotes).returns("origin https://sruiz@stash-dev.atlassian.com/scm/s745h/stash-repository.git (push)")
+      ri = RepoInfo.create({})
       assert_equal 's745h', ri.projectKey
       assert_equal 'stash-repository', ri.slug
     end
@@ -28,14 +29,14 @@ class TestStashRepoInfo < Minitest::Test
 
   context "Create repo url" do
     setup do 
-      @remote = "https://sruiz@stash-dev.atlassian.com/scm/STASH/stash.git"
+      Atlassian::Stash::Git.stubs(:get_remotes).returns("origin https://sruiz@stash-dev.atlassian.com/scm/STASH/stash.git (push)")
     end
 
     should "create expected repo path" do
       config = {
         'stash_url' => 'https://www.stash.com'
       }
-      ri = RepoInfo.create config, @remote
+      ri = RepoInfo.create config
       assert_equal '/projects/STASH/repos/stash', ri.repoPath
     end
 
@@ -43,7 +44,7 @@ class TestStashRepoInfo < Minitest::Test
       config = {
         'stash_url' => 'https://www.stash.com/foo'
       }
-      ri = RepoInfo.create config, @remote
+      ri = RepoInfo.create config
       assert_equal '/foo/projects/STASH/repos/stash', ri.repoPath
     end
 
@@ -51,7 +52,7 @@ class TestStashRepoInfo < Minitest::Test
       config = {
         'stash_url' => 'https://www.stash.com/foo'
       }
-      ri = RepoInfo.create config, @remote
+      ri = RepoInfo.create config
       assert_equal '/foo/projects/STASH/repos/stash', ri.repoPath
     end
 
@@ -59,7 +60,7 @@ class TestStashRepoInfo < Minitest::Test
       config = {
         'stash_url' => 'https://www.stash.com'
       }
-      ri = RepoInfo.create config, @remote
+      ri = RepoInfo.create config
       assert_equal 'https://www.stash.com/projects/STASH/repos/stash', ri.repoUrl(nil, nil)
     end
 
@@ -67,7 +68,7 @@ class TestStashRepoInfo < Minitest::Test
       config = {
         'stash_url' => 'https://www.stash.com/foo'
       }
-      ri = RepoInfo.create config, @remote
+      ri = RepoInfo.create config
       assert_equal 'https://www.stash.com/foo/projects/STASH/repos/stash', ri.repoUrl(nil, nil)
     end
 
@@ -75,7 +76,7 @@ class TestStashRepoInfo < Minitest::Test
       config = {
         'stash_url' => 'https://www.stash.com/foo'
       }
-      ri = RepoInfo.create config, @remote
+      ri = RepoInfo.create config
       assert_equal 'https://www.stash.com/foo/projects/STASH/repos/stash/commits?at=develop', ri.repoUrl('commits', 'develop')
     end
 
@@ -83,7 +84,7 @@ class TestStashRepoInfo < Minitest::Test
       config = {
         'stash_url' => 'https://www.stash.com/foo?git=ftw'
       }
-      ri = RepoInfo.create config, @remote
+      ri = RepoInfo.create config
       assert_equal 'https://www.stash.com/foo/projects/STASH/repos/stash/commits?git=ftw&at=develop', ri.repoUrl('commits', 'develop')
     end
   end

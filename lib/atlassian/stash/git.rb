@@ -3,6 +3,9 @@
 module Atlassian
   module Stash
     module Git
+
+      DEFAULT_REMOTE="origin"
+
       def get_current_branch
         %x(git symbolic-ref HEAD)[/refs\/heads\/(.*)/, 1]
       end
@@ -15,8 +18,11 @@ module Atlassian
         %x(git remote -v)
       end
 
-      def get_remote_url(remote = 'origin')
-        origin = get_remotes.split("\n").collect { |r| r.strip }.grep(/^#{remote}.*\(push\)$/).first
+      def get_remote_url(remote = DEFAULT_REMOTE)
+        remotes = get_remotes
+        return nil if remotes.empty?
+        origin = remotes.split("\n").collect { |r| r.strip }.grep(/^#{remote}.*\(push\)$/).first
+        return nil if origin.nil?
         URI.extract(origin).first
       end
 

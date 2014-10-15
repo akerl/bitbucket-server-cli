@@ -56,8 +56,8 @@ module Atlassian
         @source = source
         @target = target
 
-        remote = get_remote_url(options.remote || @config["remote"])
-        repoInfo = RepoInfo.create(@config, remote)
+        remote = get_remote_url()
+        repoInfo = RepoInfo.create(@config, options.remote)
 
         title, description = title_and_description(options)
 

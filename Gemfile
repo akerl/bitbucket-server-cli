@@ -18,4 +18,5 @@ group :development do
   gem "rcov", ">= 0", :platforms => :ruby_18
   gem "simplecov", ">= 0", :platforms => :ruby_19, :require => "false"
   gem "minitest", ">= 0", :platforms => :ruby_19
+  gem "mocha", ">= 0"
 end
