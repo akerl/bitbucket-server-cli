@@ -14,21 +14,26 @@ program :description, "Provides convenient functions for interacting with Atlass
 include Atlassian::Stash
 include Atlassian::Stash::Git
 
-$configFile = File.join(ENV['HOME'], ".stashconfig.yml")
+$configFileName = ".stashconfig.yml"
+$configFile = File.join(ENV['HOME'], $configFileName)
 
 def load_config
   raise "No Stash configuration found; please run configure" unless File.exists? $configFile
   config = YAML.load_file($configFile)
   raise "Stash configuration file is incomplete, please re-run configure" unless config['username'] and config['stash_url']
-  config.merge! repo_config
+  config.merge! repo_config if repo_config
   config
 end
 
 def repo_config
   return @repo_config if @repo_config
-  ascender = Pathname.pwd.to_enum(:ascend)
-  config_path = ascender.detect { |path| (path + '.stash').exist? }
-  @repo_config = YAML.load_file(path + '.stash')
+
+  repo_root = get_repo_root_directory.strip
+  repo_directory = Pathname.new(repo_root)
+  stash_config = repo_directory + $configFileName
+  if (stash_config.exist? && stash_config.file?)
+    @repo_config = YAML.load_file(stash_config)
+  end
   @repo_config
 end
 
@@ -66,7 +71,7 @@ end
 
 command 'pull-request' do |c|
   def extract_reviewers(args = [])
-    default_reviewers = Array(repo_config[:reviewers])
+    default_reviewers = repo_config.nil? ? [] : Array(repo_config[:reviewers])
     default_reviewers.concat args.collect { |user|
       user[1..-1] if user.start_with?("@")
     }.compact
@@ -90,7 +95,7 @@ command 'pull-request' do |c|
     source = args.shift
     if args.empty? or args.first.start_with?("@")
       target = source
-      source = get_current_branch()
+      source = get_current_branch
       reviewers = extract_reviewers args
     else
       target = args.shift

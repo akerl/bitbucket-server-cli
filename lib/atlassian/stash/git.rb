@@ -31,6 +31,10 @@ module Atlassian
       def create_git_alias
         %x(git config --global alias.create-pull-request "\!sh -c 'stash pull-request \\$0'")
       end
+
+      def get_repo_root_directory
+        %x(git rev-parse --show-toplevel)
+      end
     end
   end
 end
