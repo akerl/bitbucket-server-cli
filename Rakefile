@@ -14,12 +14,12 @@ require 'rake'
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
-  gem.name = "atlassian-stash"
+  gem.name = "bpescatore-stash"
   gem.homepage = "https://bitbucket.org/atlassian/stash-command-line-tools"
   gem.license = "MIT"
   gem.summary = "Command line tools for Atlassian Stash"
   gem.description = "Provides convenient functions for interacting with Atlassian Stash through the command line" 
-  gem.email = "sruiz@atlassian.com"
+  gem.email = "bpescatore@mocana.com"
   gem.authors = ["Seb Ruiz"]
   # dependencies defined in Gemfile
   gem.executables = ["stash"]
