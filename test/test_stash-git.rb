@@ -90,7 +90,7 @@ class TestGit < Minitest::Test
                                   remotes/upstream/release/v1.0
                                   remotes/upstream/feature/Issue7")
                 assert_equal true, Atlassian::Stash::Git.is_branch?('master')
-                assert_equal true, Atlassian::Stash::Git.is_branch?('remotes/production/master')
+                assert_equal true, Atlassian::Stash::Git.is_branch?('remotes/upstream/master')
         end
 
 end
