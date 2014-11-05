@@ -86,6 +86,8 @@ command 'pull-request' do |c|
   c.example 'stash pull-request topicBranch master @michael', "Create a pull request from branch 'topicBranch' into 'master' with 'michael' added as a reviewer"
   c.example 'stash pull-request master', "Create a pull request from the current git branch into 'master'"
   c.example 'stash pull-request master -T "JIRA-1234 new feature" -d "Adds new feature as described in JIRA-1234"', "Create a pull request from the current git branch into 'master' with the title 'JIRA-1234 new feature' and description 'Adds new feature as described in JIRA-1234'"
+  c.example 'stash pull-request topicBranch upstream/master', "Create a pull request from branch 'topicBranch' into branch 'master' on the remote named 'upstream'"
+  c.example 'stash pull-request remotes/upstream/master', "Create a pull request from the current branch into branch 'master' on the remote named 'upstream'"
   c.action do |args, options|
     if args.length == 0
       command(:help).run('pull-request')
