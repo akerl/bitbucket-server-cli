@@ -10,6 +10,11 @@ module Atlassian
         %x(git symbolic-ref HEAD)[/refs\/heads\/(.*)/, 1]
       end
 
+      def is_branch?(match)
+        all = %x{git branch -a}
+        not all.split().select{|x| x == match}.empty?
+      end
+
       def is_in_git_repository?
         system('git rev-parse')
       end

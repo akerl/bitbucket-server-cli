@@ -102,6 +102,23 @@ command 'pull-request' do |c|
       reviewers = extract_reviewers args
     end
 
+    options.src_remote = options.remote
+    if not is_branch?(source)
+      if not is_branch?("remotes/" + source)
+        raise "fatal: unrecogonized source branch"
+      end
+      options.src_remote = source.split('/')[0]
+      source = source.split('/')[1..-1].join('/')
+    end
+
+    if not is_branch?(target)
+      if not is_branch?("remotes/" + target)
+        raise "fatal: unrecognized target branch"
+      end
+      options.target_remote = target.split('/')[0]
+      target = target.split('/')[1..-1].join('/')
+    end
+
     ensure_within_git! do
       cpr = CreatePullRequest.new(load_config)
       cpr.create_pull_request source, target, reviewers, options
