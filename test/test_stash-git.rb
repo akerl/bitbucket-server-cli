@@ -77,4 +77,20 @@ class TestGit < Minitest::Test
 		)
 		assert_equal nil, Atlassian::Stash::Git.get_remote_url('origin')
 	end
+
+        should "branches are matched" do
+                Atlassian::Stash::Git.stubs(:get_branches).returns(
+                                "  feature
+                                  temp
+                                * master
+                                  remotes/origin/master
+                                  remotes/origin/release/v1.0
+                                  remotes/origin/feature/awesome
+                                  remotes/upstream/master
+                                  remotes/upstream/release/v1.0
+                                  remotes/upstream/feature/Issue7")
+                assert_equal true, Atlassian::Stash::Git.is_branch?('master')
+                assert_equal true, Atlassian::Stash::Git.is_branch?('remotes/production/master')
+        end
+
 end
