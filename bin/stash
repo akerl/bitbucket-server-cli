@@ -122,6 +122,7 @@ command 'pull-request' do |c|
       source = source.split('/')[1..-1].join('/')
     end
 
+    options.target_remote = options.remote
     if not is_branch?(target)
       if not is_branch?("remotes/" + target)
         raise "fatal: unrecognized target branch"

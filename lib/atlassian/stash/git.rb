@@ -11,11 +11,13 @@ module Atlassian
       end
 
       def get_branches()
-        %x{git branch -a}
+        all = %x{git branch -a}.gsub("*","").gsub(" ", "").split("\n")
+        all.select{|x| not x.include? "->"}
       end
 
       def is_branch?(match)
-        not get_branches.split().select{|x| x == match}.empty?
+        all = get_branches
+        not all.select{|x| x == match}.empty?
       end
 
       def is_in_git_repository?
