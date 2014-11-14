@@ -11,20 +11,26 @@ module Atlassian
     class CreatePullRequestResource
       attr_accessor :resource
 
-      def initialize(projectKey, slug, title, description, reviewers, source, target)
-        repository = {
-        'slug' => slug,
+      def initialize(sourceRepoInfo, targetRepoInfo, title, description, reviewers, source, target)
+        src_repository = {
+        'slug' => sourceRepoInfo.slug,
         'project' => {
-          'key' => projectKey
+          'key' => sourceRepoInfo.projectKey
+          }
+        }
+        target_repository = {
+        'slug' => targetRepoInfo.slug,
+        'project' => {
+          'key' => targetRepoInfo.projectKey
           }
         }
         fromRef = {
           'id' => source,
-          'repository' => repository
+          'repository' => src_repository
         }
         toRef = {
           'id' => target,
-          'repository' => repository
+          'repository' => target_repository
         }
         @resource = {
           'title' => title,
@@ -56,11 +62,12 @@ module Atlassian
         @source = source
         @target = target
 
-        repoInfo = RepoInfo.create(@config, options.remote)
+        srcRepoInfo = RepoInfo.create(@config, options.src_remote)
+        targetRepoInfo = RepoInfo.create(@config, options.target_remote)
 
         title, description = title_and_description(options)
 
-        resource = CreatePullRequestResource.new(repoInfo.projectKey, repoInfo.slug, title, description, reviewers, @source, @target).resource
+        resource = CreatePullRequestResource.new(srcRepoInfo, targetRepoInfo, title, description, reviewers, @source, @target).resource
 
         username = @config["username"]
         password = @config["password"]
@@ -70,7 +77,7 @@ module Atlassian
         password = ask("Password: ") { |q| q.echo = '*' } unless @config["password"]
 
         uri = URI.parse(@config["stash_url"])
-        prPath = repoInfo.repoPath + '/pull-requests'
+        prPath = targetRepoInfo.repoPath + '/pull-requests'
          
         req = Net::HTTP::Post.new(uri.query.nil? ? "#{prPath}" : "#{prPath}?#{uri.query}", {'Content-Type' => 'application/json', 'Accept' => 'application/json'})
         req.basic_auth username, password
