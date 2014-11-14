@@ -136,8 +136,6 @@ module Atlassian
       end
 
       def git_commit_messages
-        puts @target_ref
-        puts @source_ref
         @commit_messages ||= `git log --reverse --format=%s #{@target_ref}..#{@source_ref}`
       end
 
