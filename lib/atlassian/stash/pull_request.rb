@@ -62,6 +62,16 @@ module Atlassian
         @source = source
         @target = target
 
+        @source_ref = source
+        if options.src_remote and not options.src_remote.empty?
+          @source_ref = options.src_remote + "/" + @source_ref
+        end
+
+        @target_ref = target
+        if options.target_remote and not options.target_remote.empty?
+          @target_ref = options.target_remote + "/" + @target_ref
+        end
+
         srcRepoInfo = RepoInfo.create(@config, options.src_remote)
         targetRepoInfo = RepoInfo.create(@config, options.target_remote)
 
@@ -78,7 +88,7 @@ module Atlassian
 
         uri = URI.parse(@config["stash_url"])
         prPath = targetRepoInfo.repoPath + '/pull-requests'
-         
+
         req = Net::HTTP::Post.new(uri.query.nil? ? "#{prPath}" : "#{prPath}?#{uri.query}", {'Content-Type' => 'application/json', 'Accept' => 'application/json'})
         req.basic_auth username, password
         req.body = resource.to_json
@@ -126,7 +136,9 @@ module Atlassian
       end
 
       def git_commit_messages
-        @commit_messages ||= `git log --reverse --format=%s #{@target}..#{@source}`
+        puts @target_ref
+        puts @source_ref
+        @commit_messages ||= `git log --reverse --format=%s #{@target_ref}..#{@source_ref}`
       end
 
       def parse_proxy(conf)
