@@ -112,7 +112,6 @@ command 'pull-request' do |c|
         target = target['remotes/'.size..-1]
     end
 
-    options.src_remote = options.remote
     if not is_branch?(source)
       if not is_branch?("remotes/" + source)
         raise "fatal: unrecogonized source branch"
@@ -120,7 +119,10 @@ command 'pull-request' do |c|
       # If a remote matches, split the remote out of the refspec
       options.src_remote = source.split('/')[0]
       source = source.split('/')[1..-1].join('/')
+    else
+      options.src_remote = Atlassian::Stash::Git.get_remote(source)
     end
+    options.src_remote = options.remote if options.src_remote.nil? || options.src_remote.empty?
 
     options.target_remote = options.remote
     if not is_branch?(target)
