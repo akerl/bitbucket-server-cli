@@ -28,6 +28,12 @@ module Atlassian
         %x(git remote -v)
       end
 
+      def get_remote(branch = nil)
+        remote_branch = %x(git rev-parse --abbrev-ref --symbolic-full-name #{branch}@{u} 2>/dev/null)
+        remote = remote_branch.split('/').first
+        remote == "" ? nil : remote
+      end
+
       def get_remote_url(remote=nil)
         remotes = get_remotes
         return nil if remotes.empty?
