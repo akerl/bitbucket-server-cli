@@ -14,9 +14,12 @@ class TestStashRepoInfo < Minitest::Test
       assert_equal 'stash', ri.slug
     end
 
-    should "extracting project key and repo slug from non stash url raises exception" do
-      Atlassian::Stash::Git.stubs(:get_remotes).returns("origin git@bitbucket.org:sebr/atlassian-stash-rubygem.git (push)")
-      assert_raises(RuntimeError) { RepoInfo.create({}) }
+    should "extracting project key and repo slug from SSH remote" do
+      Atlassian::Stash::Git.stubs(:get_remotes).returns("origin sruiz@stash-dev.atlassian.com:STASH/stash.git (push)")
+
+      ri = RepoInfo.create({})
+      assert_equal 'STASH', ri.projectKey
+      assert_equal 'stash', ri.slug
     end
 
     should "repo with hyphes" do
