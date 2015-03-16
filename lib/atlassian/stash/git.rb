@@ -11,7 +11,7 @@ module Atlassian
       end
 
       def get_branches()
-        all = %x{git branch -a}.gsub("*","").gsub(" ", "").split("\n")
+        all = %x{git branch --no-color -a}.gsub("*","").gsub(" ", "").split("\n")
         all.select{|x| not x.include? "->"}
       end
 
