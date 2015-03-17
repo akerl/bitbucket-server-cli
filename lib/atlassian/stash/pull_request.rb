@@ -136,7 +136,7 @@ module Atlassian
       end
 
       def git_commit_messages
-        @commit_messages ||= `git log --reverse --format=%s #{@target_ref}..#{@source_ref}`
+        @commit_messages ||= `git log --no-color --reverse --format=%s #{@target_ref}..#{@source_ref}`
       end
 
       def parse_proxy(conf)
