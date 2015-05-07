@@ -14,9 +14,24 @@ Once the gem is installed, the command `stash` will be in your `$PATH`
 
 ## Configuration and usage
 Run `stash configure`. This will prompt for details about your Stash instance. If no password is provided, then you will be prompted for a password when executing commands to Stash.
-Currently, the password is stored in plain text in a configuration file which is protected with a permission bit of `0600`. 
 
 The global configuration file lives at `$HOME/.stashconfig.yml` and any options in a similarly named `.stashconfig.yml` file in the root of a git repository will take precedence.
+
+### Passwords
+There are currently two ways to store your password in the configuration file. You may store it as plain text with the key `password`, for example:
+
+```
+password: s3cre7
+```
+
+Or you may store a command string with the `passwordeval` key which allows you to use any encrypted method you like in order to store your password. For example, if using gpg:
+
+```
+passwordeval: gpg --no-tty --quiet --decrypt ~/.secret.gpg
+```
+
+The `stash configure` utility will not prompt you for this. If you wish to use `passwordeval`, omit a password during the configuration and add it to `~/.stashconfig.yml` afterwards.
+
 
 ### Creating a pull request
 Use the `pull-request` command to create a pull request in Stash. For example:

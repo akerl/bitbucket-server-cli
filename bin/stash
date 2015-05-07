@@ -21,6 +21,11 @@ def load_config
   raise "No Stash configuration found; please run configure" unless File.exists? $configFile
   config = YAML.load_file($configFile)
   raise "Stash configuration file is incomplete, please re-run configure" unless config['username'] and config['stash_url']
+
+  if config['password'].nil? && !config['passwordeval'].nil?
+    config['password'] = `#{config['passwordeval']}`.strip
+  end
+
   config.merge! repo_config if repo_config
   config
 end
