@@ -24,10 +24,19 @@ class TestStashRepoInfo < Minitest::Test
 
     should "repo with hyphes" do
       Atlassian::Stash::Git.stubs(:get_remotes).returns("origin https://sruiz@stash-dev.atlassian.com/scm/s745h/stash-repository.git (push)")
+      
       ri = RepoInfo.create({})
       assert_equal 's745h', ri.projectKey
       assert_equal 'stash-repository', ri.slug
     end
+
+    should "extracting project key and repo slug from SSH remote with special repository url" do
+      Atlassian::Stash::Git.stubs(:get_remotes).returns("origin https://sruiz@stash-dev.atlassian.com/project.name/stash-repository.git (push)")
+      
+      ri = RepoInfo.create({})
+      assert_equal 'project.name', ri.projectKey
+      assert_equal 'stash-repository', ri.slug
+    end    
   end
 
   context "Create repo url" do
