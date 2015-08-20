@@ -1,5 +1,7 @@
 # Atlassian Stash Command Line Tools
 
+[ ![Build Status](https://codeship.com/projects/813f7dc0-2924-0133-5117-3e546cad586a/status?branch=master)](https://codeship.com/projects/97914)
+
 ## Installing this tool
 This command line helper for Stash is written in Ruby and is deployed as a [Ruby Gem](https://rubygems.org/gems/atlassian-stash/). Installation is easy, simply run the following command
 
