@@ -52,10 +52,11 @@ module Atlassian
           end
         end
 
-        if m = remoteUrl.match(/[\/:]([a-zA-Z~][a-zA-Z0-9_\-]*)\/([[:alnum:]][\w\-\.]*).git$/)
-          return RepoInfo.new(config, m[1], m[2])
+        if !m = remoteUrl.match(/[\/:]([a-zA-Z~][a-zA-Z0-9_\-\.]*)\/([[:alnum:]][\w\-\.]*).git$/)
+          raise "Repository does not seem to be hosted in Stash; Remote url: " + remoteUrl          
         end
-        raise "Repository does not seem to be hosted in Stash; Remote url: " + remoteUrl
+        
+        return RepoInfo.new(config, m[1], m[2])
       end
     end
   end
