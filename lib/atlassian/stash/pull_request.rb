@@ -1,7 +1,6 @@
 require 'json'
 require 'net/https'
 require 'uri'
-require 'git'
 require 'launchy'
 
 include Atlassian::Util::TextUtil
