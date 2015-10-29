@@ -23,11 +23,20 @@ module Atlassian
         repoPath
       end
 
-      def repoUrl(suffix, branch)
+      def repoUrl(suffix, branch, optional = {})
+        filePath = optional[:filePath]
+        lineNumber = optional[:lineNumber]
         uri = URI.parse(@config["stash_url"])
         path = repoPath + (suffix.nil? ? '' : '/' + suffix)
+        if filePath && !filePath.nil?
+          path = path + (filePath.start_with?('/') ? filePath : "/#{filePath}")
+
+          if lineNumber && !lineNumber.nil?
+            uri.fragment = lineNumber.to_s
+          end
+        end
         uri.path = path
-        
+
         if (!branch.nil? and !branch.empty?)
             q = uri.query || ''
             q = q + (q.empty? ? '' : '&') + 'at=' + branch unless branch.nil?

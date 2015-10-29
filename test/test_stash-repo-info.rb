@@ -84,6 +84,22 @@ class TestStashRepoInfo < Minitest::Test
       assert_equal 'https://www.stash.com/foo/projects/STASH/repos/stash', ri.repoUrl(nil, nil)
     end
 
+    should "create expected repo url with context, branch and filePath" do
+      config = {
+        'stash_url' => 'https://www.stash.com/foo'
+      }
+      ri = RepoInfo.create config
+      assert_equal 'https://www.stash.com/foo/projects/STASH/repos/stash/browse/path/to/file?at=develop', ri.repoUrl('browse', 'develop', filePath: 'path/to/file')
+    end
+
+    should "create expected repo url with context, branch, filePath and lineNumber" do
+      config = {
+        'stash_url' => 'https://www.stash.com/foo'
+      }
+      ri = RepoInfo.create config
+      assert_equal 'https://www.stash.com/foo/projects/STASH/repos/stash/browse/path/to/file?at=develop#1337', ri.repoUrl('browse', 'develop', filePath: 'path/to/file', lineNumber: 1337)
+    end
+
     should "create expected repo url with path and branch" do
       config = {
         'stash_url' => 'https://www.stash.com/foo'
@@ -98,6 +114,22 @@ class TestStashRepoInfo < Minitest::Test
       }
       ri = RepoInfo.create config
       assert_equal 'https://www.stash.com/foo/projects/STASH/repos/stash/commits?git=ftw&at=develop', ri.repoUrl('commits', 'develop')
+    end
+
+    should "create expected repo url with context, query, path, branch and filePath" do
+      config = {
+        'stash_url' => 'https://www.stash.com/foo?git=ftw'
+      }
+      ri = RepoInfo.create config
+      assert_equal 'https://www.stash.com/foo/projects/STASH/repos/stash/browse/path/to/file?git=ftw&at=develop', ri.repoUrl('browse', 'develop', filePath: 'path/to/file')
+    end
+
+    should "create expected repo url with context, query, branch, filePath and lineNumber" do
+      config = {
+        'stash_url' => 'https://www.stash.com/foo?git=ftw'
+      }
+      ri = RepoInfo.create config
+      assert_equal 'https://www.stash.com/foo/projects/STASH/repos/stash/browse/path/to/file?git=ftw&at=develop#1337', ri.repoUrl('browse', 'develop', filePath: 'path/to/file', lineNumber: 1337)
     end
   end
 end

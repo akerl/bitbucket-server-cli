@@ -147,10 +147,12 @@ command 'pull-request' do |c|
 end
 
 command 'browse' do |c|
-  c.syntax = 'browse [browse|commits|pull-requests]'
+  c.syntax = 'browse [browse|commits|pull-requests] [-p path] [-l lineNumber]'
   c.description = 'Open the Stash web ui for this repository'
   c.option '-b branch', '--branch branch', String, 'Open the Stash web ui at the specified branch, tag or commit hash. Defaults to the current branch'
   c.option '-r remote', '--remote remote', String, 'Creates the pull request in the Stash repository specified by the given remote'
+  c.option '-p path', '--path path', String, 'Open the Stash web ui at the specified path. Valid only when used with browse.'
+  c.option '-l lineNumber', '--lineNumber lineNumber', Integer, 'Open the Stash web ui at the specified file, highlighting the specified line number. Valid only when used with browse -p'
   c.example 'stash browse -b master', 'Open the files view for this repository at the current branch'
   c.example 'stash browse -r upstream', 'Open the files view for the "upstream" remote repository'
 
@@ -164,7 +166,12 @@ command 'browse' do |c|
 
     branch = options.branch || get_current_branch
 
-    Launchy.open repoInfo.repoUrl(tab, branch)
+    if tab == 'browse' && options.path
+      url = repoInfo.repoUrl(tab, branch, filePath: options.path, lineNumber: options.lineNumber)
+    else
+      url = repoInfo.repoUrl(tab, branch)
+    end
+    Launchy.open url
   end
 end
 
