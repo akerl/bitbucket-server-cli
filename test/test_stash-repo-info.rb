@@ -161,5 +161,19 @@ class TestStashRepoInfo < Minitest::Test
 
       assert_equal expected, RepoInfo.appendFilePathAndFragment(uri, '/path/to/file', 1337).to_s
     end
+
+    should 'Return the specified uri unmodified if both filePath and lineNumber is nil' do
+      expected = 'http://example.com/browse'
+      uri = URI.parse(expected)
+
+      assert_equal expected, RepoInfo.appendFilePathAndFragment(uri, nil, nil).to_s
+    end
+
+    should 'Return the specified uri unmodified if filePath is the empty string and lineNumber is nil' do
+      expected = 'http://example.com/browse'
+      uri = URI.parse(expected)
+
+      assert_equal expected, RepoInfo.appendFilePathAndFragment(uri, '', nil).to_s
+    end
   end
 end

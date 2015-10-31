@@ -40,7 +40,7 @@ module Atlassian
       end
 
       def self.appendFilePathAndFragment(uri, filePath, lineNumber)
-        if filePath && !filePath.nil?
+        if filePath && !filePath.empty?
           uri.path = uri.path + (filePath.start_with?('/') ? filePath : "/#{filePath}")
 
           if lineNumber && !lineNumber.nil?
