@@ -23,9 +23,9 @@ module Atlassian
         repoPath
       end
 
-      def repoUrl(suffix, branch, optional = {})
-        filePath = optional[:filePath]
-        lineNumber = optional[:lineNumber]
+      def repoUrl(suffix, branch, options = {})
+        filePath = options[:filePath]
+        lineNumber = options[:lineNumber]
         uri = URI.parse(@config["stash_url"])
         path = repoPath + (suffix.nil? ? '' : '/' + suffix)
         if filePath && !filePath.nil?
