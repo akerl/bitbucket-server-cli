@@ -132,4 +132,34 @@ class TestStashRepoInfo < Minitest::Test
       assert_equal 'https://www.stash.com/foo/projects/STASH/repos/stash/browse/path/to/file?git=ftw&at=develop#1337', ri.repoUrl('browse', 'develop', filePath: 'path/to/file', lineNumber: 1337)
     end
   end
+
+  context "append file path and line number to uri" do
+    should 'Append a file path to the specified uri' do
+      uri = URI.parse('http://example.com/browse')
+      expected = 'http://example.com/browse/path/to/file'
+
+      assert_equal expected, RepoInfo.appendFilePathAndFragment(uri, 'path/to/file', nil).to_s
+    end
+
+    should 'Append a file path with leading slash to the specified uri' do
+      uri = URI.parse('http://example.com/browse')
+      expected = 'http://example.com/browse/path/to/file'
+
+      assert_equal expected, RepoInfo.appendFilePathAndFragment(uri, '/path/to/file', nil).to_s
+    end
+
+    should 'Append a file path and line number to the specified uri' do
+      uri = URI.parse('http://example.com/browse')
+      expected = 'http://example.com/browse/path/to/file#1337'
+
+      assert_equal expected, RepoInfo.appendFilePathAndFragment(uri, 'path/to/file', 1337).to_s
+    end
+
+    should 'Append a file path with leading slash and line number to the specified uri' do
+      uri = URI.parse('http://example.com/browse')
+      expected = 'http://example.com/browse/path/to/file#1337'
+
+      assert_equal expected, RepoInfo.appendFilePathAndFragment(uri, '/path/to/file', 1337).to_s
+    end
+  end
 end
