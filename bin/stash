@@ -9,7 +9,7 @@ require 'pathname'
 
 program :name, "Atlassian Stash CLI"
 program :version, Atlassian::Stash::Version::STRING
-program :description, "Provides convenient functions for interacting with Atlassian Stash through the command line"
+program :description, "Provides convenient functions for interacting with Atlassian Bitbucket Server through the command line"
 
 include Atlassian::Stash
 include Atlassian::Stash::Git
@@ -18,7 +18,7 @@ $configFileName = ".stashconfig.yml"
 $configFile = File.join(ENV['HOME'], $configFileName)
 
 def load_config
-  raise "No Stash configuration found; please run configure" unless File.exists? $configFile
+  raise "No Bitbucket Server configuration found; please run configure" unless File.exists? $configFile
   config = YAML.load_file($configFile)
   raise "Stash configuration file is incomplete, please re-run configure" unless config['username'] and config['stash_url']
 
@@ -44,16 +44,16 @@ end
 
 command 'configure' do |c|
   c.syntax = 'configure'
-  c.description = 'Setup configuration details to your Stash instance'
-  c.example 'stash configure --username sebr --password s3cre7 --stash_url http://stash.mycompany.com', 'Setup Stash CLI with credentials to the Stash server'
-  c.option '--username user', String, 'Writes your Stash username to the configuration file'
-  c.option '--password password', String, 'Writes your Stash user password to the configuration file. If omitted, password will be prompted to be entered'
-  c.option '--stashUrl url', String, 'Writes the Stash server url to the configuration file'
-  c.option '--remote remote', String, 'Pull requests will be created in the Stash repository specified by the given remote'
+  c.description = 'Setup configuration details to your Bitbucket Server instance'
+  c.example 'stash configure --username sebr --password s3cre7 --stashUrl http://bitbucket.mycompany.com', 'Setup Bitbucket Server CLI with credentials to the Bitbucket Server instance'
+  c.option '--username user', String, 'Writes your Bitbucket Server username to the configuration file'
+  c.option '--password password', String, 'Writes your Bitbucket Server user password to the configuration file. If omitted, password will be prompted to be entered'
+  c.option '--stashUrl url', String, 'Writes the Bitbucket Server hostname to the configuration file'
+  c.option '--remote remote', String, 'Pull requests will be created in the Bitbucket Server repository specified by the given remote'
   c.action do |args, options|
-    username = options.username ? options.username : ask("Stash Username: ")
-    password = options.password ? options.password : ask("Stash Password (optional): ") { |q| q.echo = "*" }
-    stashUrl = options.stashUrl ? options.stashUrl : ask("Stash URL: ")
+    username = options.username ? options.username : ask("Bitbucket Server Username: ")
+    password = options.password ? options.password : ask("Bitbucket Server Password (optional): ") { |q| q.echo = "*" }
+    stashUrl = options.stashUrl ? options.stashUrl : ask("Bitbucket Server URL: ")
     remote   = options.remote   ? options.remote   : ask("Remote (optional): ")
 
     c = {
@@ -83,10 +83,10 @@ command 'pull-request' do |c|
   end
 
   c.syntax = 'pull-request [sourceBranch] targetBranch [@reviewer1 @reviewer2] [options]'
-  c.description = 'Create a pull request in Stash'
+  c.description = 'Create a pull request in Bitbucket Server'
   c.option '-d DESCRIPTION', '--description DESCRIPTION', String, 'Use the following description when creating the pull request'
   c.option '-T TITLE', '--title TITLE', String, 'Use the following title when creating the pull request'
-  c.option '-r remote', '--remote remote', String, 'Creates the pull request in the Stash repository specified by the given remote'
+  c.option '-r remote', '--remote remote', String, 'Creates the pull request in the Bitbucket Server repository specified by the given remote'
   c.option '-o', '--open', 'Open the created pull request page in a web browser'
   c.example 'stash pull-request topicBranch master @michael', "Create a pull request from branch 'topicBranch' into 'master' with 'michael' added as a reviewer"
   c.example 'stash pull-request master', "Create a pull request from the current git branch into 'master'"
@@ -148,10 +148,10 @@ end
 
 command 'browse' do |c|
   c.syntax = 'browse [browse|commits|pull-requests] [path]'
-  c.description = 'Open the Stash web ui for this repository'
-  c.option '-b branch', '--branch branch', String, 'Open the Stash web ui at the specified branch, tag or commit hash. Defaults to the current branch'
-  c.option '-r remote', '--remote remote', String, 'Creates the pull request in the Stash repository specified by the given remote'
-  c.option '-l lineNumber', '--lineNumber lineNumber', Integer, 'Open the Stash web ui at the specified file, highlighting the specified line number. Valid only when used with browse when path is specified'
+  c.description = 'Open the Bitbucket Server web ui for this repository'
+  c.option '-b branch', '--branch branch', String, 'Open the Bitbucket Server web ui at the specified branch, tag or commit hash. Defaults to the current branch'
+  c.option '-r remote', '--remote remote', String, 'Creates the pull request in the Bitbucket Server repository specified by the given remote'
+  c.option '-l lineNumber', '--lineNumber lineNumber', Integer, 'Open the Bitbucket Server web ui at the specified file, highlighting the specified line number. Valid only when used with browse when path is specified'
   c.example 'stash browse -b master', 'Open the files view for this repository at the current branch'
   c.example 'stash browse -r upstream', 'Open the files view for the "upstream" remote repository'
   c.example 'stash browse browse -l 42 path/to/a/file', 'Open the files view for this repository at the specified file on the current branch, highlighting the specified line'
@@ -178,7 +178,7 @@ end
 
 
 default_command :help
-program :help_formatter, :compact
+#program :help_formatter, :compact
 program :help, 'Authors', 'Seb Ruiz <sruiz@atlassian.com>'
 program :help, 'Website', 'https://bitbucket.org/atlassian/stash-command-line-tools'
 

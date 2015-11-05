@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "atlassian-stash"
   gem.homepage = "https://bitbucket.org/atlassian/stash-command-line-tools"
   gem.license = "MIT"
-  gem.summary = "Command line tools for Atlassian Stash"
-  gem.description = "Provides convenient functions for interacting with Atlassian Stash through the command line" 
+  gem.summary = "Command line tools for Bitbucket Server"
+  gem.description = "Provides convenient functions for interacting with Bitbucket Server through the command line" 
   gem.email = "sruiz@atlassian.com"
   gem.authors = ["Seb Ruiz"]
   # dependencies defined in Gemfile

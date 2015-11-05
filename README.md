@@ -1,9 +1,9 @@
-# Atlassian Stash Command Line Tools
+# Bitbucket Server Command Line Tools
 
 [ ![Build Status](https://codeship.com/projects/813f7dc0-2924-0133-5117-3e546cad586a/status?branch=master)](https://codeship.com/projects/97914)
 
 ## Installing this tool
-This command line helper for Stash is written in Ruby and is deployed as a [Ruby Gem](https://rubygems.org/gems/atlassian-stash/). Installation is easy, simply run the following command
+This command line helper for Bitbucket Server is written in Ruby and is deployed as a [Ruby Gem](https://rubygems.org/gems/atlassian-stash/). Installation is easy, simply run the following command
 
 ```
 #!text
@@ -15,7 +15,7 @@ $> gem install atlassian-stash
 Once the gem is installed, the command `stash` will be in your `$PATH`
 
 ## Configuration and usage
-Run `stash configure`. This will prompt for details about your Stash instance. If no password is provided, then you will be prompted for a password when executing commands to Stash.
+Run `stash configure`. This will prompt for details about your Bitbucket Server instance. If no password is provided, then you will be prompted for a password when executing commands to Bitbucket Server.
 
 The global configuration file lives at `$HOME/.stashconfig.yml` and any options in a similarly named `.stashconfig.yml` file in the root of a git repository will take precedence.
 
@@ -36,7 +36,7 @@ The `stash configure` utility will not prompt you for this. If you wish to use `
 
 
 ### Creating a pull request
-Use the `pull-request` command to create a pull request in Stash. For example:
+Use the `pull-request` command to create a pull request in Bitbucket Server. For example:
 
 ```
 #!text
@@ -51,13 +51,13 @@ See the usage for command details
 $> stash help pull-request
 ```
 
-### Opening the Stash web UI
-Use the `browse` command to open the Stash UI for your repository in the browser.
+### Opening the Bitbucket Server web UI
+Use the `browse` command to open the Bitbucket Server UI for your repository in the browser.
 
 ```
 #!text
 $> stash browse -b develop
-Open the browser at the Stash repository page for the branch 'develop'
+Open the browser at the Bitbucket Server repository page for the branch 'develop'
 ```
 
 For more options, see the help
@@ -73,12 +73,12 @@ Running `stash configure` will prepopulate `~/.stashconfig.yml` with a variety o
 
 ```
 #!yaml
-username: seb # username to connect to stash server.
-password: s3cr3t # password for user. If ommitted, you will be prompted at the terminal when making a request to Stash
-stash_url: https://stash.server.com # fully qualified stash url
-remote: upstream # Pull requests will be created in the Stash repository specified by this remote
+username: seb # username to connect to Bitbucket Server server.
+password: s3cr3t # password for user. If ommitted, you will be prompted at the terminal when making a request to Bitbucket Server
+stash_url: https://bitbucket.server.com # fully qualified Bitbucket Server url
+remote: upstream # Pull requests will be created in the Bitbucket Server repository specified by this remote
 open: true # opens newly created pull requests in the browser
-ssl_no_verify: true # do not check ssl certificates for the configured stash server
+ssl_no_verify: true # do not check ssl certificates for the configured Bitbucket Server server
 ```
 
 ## Troubleshooting
