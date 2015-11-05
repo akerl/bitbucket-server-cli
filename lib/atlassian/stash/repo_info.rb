@@ -23,11 +23,13 @@ module Atlassian
         repoPath
       end
 
-      def repoUrl(suffix, branch)
+      def repoUrl(suffix, branch, options = {})
+        filePath = options[:filePath]
+        lineNumber = options[:lineNumber]
         uri = URI.parse(@config["stash_url"])
-        path = repoPath + (suffix.nil? ? '' : '/' + suffix)
-        uri.path = path
-        
+        uri.path = repoPath + (suffix.nil? ? '' : '/' + suffix)
+        uri = RepoInfo.appendFilePathAndFragment(uri, filePath, lineNumber)
+
         if (!branch.nil? and !branch.empty?)
             q = uri.query || ''
             q = q + (q.empty? ? '' : '&') + 'at=' + branch unless branch.nil?
@@ -35,6 +37,18 @@ module Atlassian
         end
 
         uri.to_s
+      end
+
+      def self.appendFilePathAndFragment(uri, filePath, lineNumber)
+        if filePath && !filePath.empty?
+          uri.path = uri.path + (filePath.start_with?('/') ? filePath : "/#{filePath}")
+
+          if lineNumber && !lineNumber.nil?
+            uri.fragment = lineNumber.to_s
+          end
+        end
+
+        uri
       end
 
       def self.create (config, remote=nil)
