@@ -48,8 +48,8 @@ command 'configure' do |c|
   c.example 'stash configure --username sebr --password s3cre7 --stash_url http://stash.mycompany.com', 'Setup Stash CLI with credentials to the Stash server'
   c.option '--username user', String, 'Writes your Stash username to the configuration file'
   c.option '--password password', String, 'Writes your Stash user password to the configuration file. If omitted, password will be prompted to be entered'
-  c.option '--stashUrl', String, 'Writes the Stash server url to the configuration file'
-  c.option '--remote', String, 'Pull requests will be created in the Stash repository specified by the given remote'
+  c.option '--stashUrl url', String, 'Writes the Stash server url to the configuration file'
+  c.option '--remote remote', String, 'Pull requests will be created in the Stash repository specified by the given remote'
   c.action do |args, options|
     username = options.username ? options.username : ask("Stash Username: ")
     password = options.password ? options.password : ask("Stash Password (optional): ") { |q| q.echo = "*" }
