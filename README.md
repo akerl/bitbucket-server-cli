@@ -2,8 +2,11 @@
 
 [ ![Build Status](https://codeship.com/projects/813f7dc0-2924-0133-5117-3e546cad586a/status?branch=master)](https://codeship.com/projects/97914)
 
+This command line tool is a utility for Bitbucket Server (where you download and host bitbucket yourself). If you are
+a user of Bitbucket Cloud (bitbucket.org) then this tool is not for you.
+
 ## Installing this tool
-This command line helper for Bitbucket Server is written in Ruby and is deployed as a [Ruby Gem](https://rubygems.org/gems/atlassian-stash/). Installation is easy, simply run the following command
+This tool is written in Ruby and is deployed as a [Ruby Gem](https://rubygems.org/gems/atlassian-stash/). Installation is easy, simply run the following command
 
 ```
 #!text
