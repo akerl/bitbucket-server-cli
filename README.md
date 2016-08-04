@@ -1,6 +1,6 @@
 # Bitbucket Server Command Line Tools
 
-[ ![Build Status](https://codeship.com/projects/813f7dc0-2924-0133-5117-3e546cad586a/status?branch=master)](https://codeship.com/projects/97914)
+[ ![Build Status](https://bitbucket-badges.useast.atlassian.io/badge/atlassian/bitbucket-server-cli.svg)](https://bitbucket.org/atlassian/bitbucket-server-cli/addon/pipelines/home)
 
 This command line tool is a utility for Bitbucket Server (where you download and host bitbucket yourself). If you are
 a user of Bitbucket Cloud (bitbucket.org) then this tool is not for you.
